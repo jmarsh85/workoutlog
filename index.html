@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="WorkoutDB">
-<title>WorkoutDB v2.9.0</title>
+<title>WorkoutDB v2.9.6</title>
 <style>
 :root {
   --bg0:#0E0F11;--bg1:#141517;--bg2:#1A1B1E;--bg3:#202124;--bg4:#27292D;
@@ -26,6 +26,10 @@ body{height:100%;background:var(--bg0);color:var(--t1);font-family:-apple-system
 #hdr-back{width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--teal);cursor:pointer;flex-shrink:0}
 #hdr-title{flex:1;font-size:17px;font-weight:700;color:var(--t1);letter-spacing:-0.3px}
 #hdr-action{width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+#hdr-settings{width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:var(--t2);transition:color var(--trans)}
+#hdr-ai{width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:var(--t2);transition:color var(--trans)}
+#hdr-ai:active{color:var(--purple)}
+#hdr-settings:active{color:var(--teal)}
 /* CONTENT */
 #content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative}
 #content::-webkit-scrollbar{display:none}
@@ -107,6 +111,66 @@ body{height:100%;background:var(--bg0);color:var(--t1);font-family:-apple-system
   padding-bottom:calc(env(safe-area-inset-bottom,20px) + 60px);
 }
 #dk-panel.open{display:flex}
+/* AI ASSISTANT PANEL */
+#ai-panel{
+  position:absolute;inset:0;z-index:105;max-width:430px;margin:0 auto;
+  background:var(--bg0);display:none;flex-direction:column;
+}
+#ai-panel.open{display:flex}
+#ai-hdr{
+  flex-shrink:0;display:flex;align-items:center;gap:10px;
+  padding:calc(var(--safe-t) + 6px) 16px 10px;
+  background:linear-gradient(180deg,rgba(157,78,221,0.10) 0%,var(--bg1) 100%);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  min-height:calc(var(--safe-t) + 50px);
+}
+#ai-hdr-back{width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--purple);cursor:pointer;flex-shrink:0}
+#ai-hdr-title{flex:1;font-size:17px;font-weight:700;color:var(--t1);letter-spacing:-0.3px}
+#ai-hdr-copy,#ai-hdr-clear{width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:var(--t2);cursor:pointer;flex-shrink:0;transition:color var(--trans)}
+#ai-hdr-copy:active,#ai-hdr-clear:active{color:var(--purple)}
+#ai-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px 8px}
+#ai-messages{display:flex;flex-direction:column;gap:12px}
+.ai-msg-row{display:flex;flex-direction:column;max-width:88%}
+.ai-msg-row.user{align-self:flex-end;align-items:flex-end}
+.ai-msg-row.assistant{align-self:flex-start;align-items:flex-start}
+.ai-msg-bubble{
+  padding:10px 13px;border-radius:16px;font-size:14px;line-height:1.5;
+  white-space:pre-wrap;word-break:break-word;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.ai-msg-row.user .ai-msg-bubble{background:linear-gradient(135deg,var(--teal),var(--purple));color:#000;border-bottom-right-radius:4px}
+.ai-msg-row.assistant .ai-msg-bubble{background:var(--bg2);color:var(--t1);border:1px solid var(--border1);border-bottom-left-radius:4px}
+.ai-msg-meta{font-size:10px;color:var(--t3);margin-top:4px;padding:0 4px}
+.ai-msg-copied{color:var(--teal)!important}
+#ai-empty{padding:40px 20px;text-align:center;color:var(--t3)}
+#ai-empty-icon{font-size:38px;margin-bottom:10px}
+#ai-empty-label{font-size:14px;font-weight:600;color:var(--t2);margin-bottom:4px}
+#ai-empty-sub{font-size:12px;color:var(--t3);line-height:1.5}
+.ai-typing{display:flex;gap:4px;padding:12px 13px}
+.ai-typing span{width:6px;height:6px;border-radius:50%;background:var(--t3);animation:aiTypingPulse 1.2s infinite ease-in-out}
+.ai-typing span:nth-child(2){animation-delay:0.15s}
+.ai-typing span:nth-child(3){animation-delay:0.3s}
+@keyframes aiTypingPulse{0%,60%,100%{opacity:0.3;transform:scale(0.85)}30%{opacity:1;transform:scale(1)}}
+#ai-input-row{
+  flex-shrink:0;display:flex;align-items:flex-end;gap:8px;
+  padding:10px 12px calc(env(safe-area-inset-bottom,12px) + 10px);
+  background:var(--bg1);border-top:1px solid var(--border1);
+}
+#ai-input{
+  flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:18px;
+  color:var(--t1);font-family:inherit;font-size:16px;padding:10px 16px;
+  outline:none;resize:none;max-height:120px;line-height:1.4;
+  transition:border-color var(--trans);
+}
+#ai-input:focus{border-color:var(--purple)}
+#ai-send-btn{
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--teal),var(--purple));color:#000;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:transform 0.1s,opacity 0.15s;-webkit-tap-highlight-color:transparent;
+}
+#ai-send-btn:active{transform:scale(0.92)}
+#ai-send-btn.disabled{opacity:0.35;pointer-events:none}
 #dk-hdr{
   display:flex;align-items:center;gap:0;
   padding:0 0 12px;border-bottom:1px solid var(--border1);
@@ -821,6 +885,12 @@ body{height:100%;background:var(--bg0);color:var(--t1);font-family:-apple-system
     </div>
     <div id="hdr-title" onclick="dkHeaderTap()">WorkoutDB</div>
     <div id="hdr-action"></div>
+    <div id="hdr-ai" onclick="openAiPanel()" title="AI Assistant">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 9.5 8.5 3 11l6.5 2.5L12 20l2.5-6.5L21 11l-6.5-2.5z"/></svg>
+    </div>
+    <div id="hdr-settings" onclick="navTo('s-settings')" title="Settings">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </div>
   </div>
 
   <div id="content">
@@ -829,7 +899,7 @@ body{height:100%;background:var(--bg0);color:var(--t1);font-family:-apple-system
       <!-- Hero title -->
       <div id="home-hero">
         <div class="home-title">Workout<span class="home-title-accent">DB</span></div>
-        <div class="home-version">V 2.9.0</div>
+        <div class="home-version">V 2.9.5</div>
       </div>
       <!-- Stat cards row -->
       <div id="home-stats"></div>
@@ -1041,6 +1111,9 @@ body{height:100%;background:var(--bg0);color:var(--t1);font-family:-apple-system
 
     <!-- CALENDAR -->
     <div id="s-calendar" class="screen"><div id="cal-view"></div></div>
+
+    <!-- SETTINGS (header gear icon only — not in bottom nav) -->
+    <div id="s-settings" class="screen"><div id="settings-view"></div></div>
   </div>
 
   <div id="nav">
@@ -1096,6 +1169,7 @@ body{height:100%;background:var(--bg0);color:var(--t1);font-family:-apple-system
         <div class="dk-hdr-btn" id="dk-inspect-btn" onclick="dkToggleInspect()">🔍 Inspect</div>
         <div class="dk-hdr-btn" onclick="dkApiKeyModal()" id="dk-key-btn" title="Set API key for AI analysis">🔑 Key</div>
         <div class="dk-hdr-btn" onclick="dkSessionBrief()" title="Copy open items as session prompt">📋 Brief</div>
+        <div class="dk-hdr-btn" onclick="generateSessionBrief()" title="Copy full app context for a new Claude.ai session">🧠 Full Brief</div>
         <div class="dk-hdr-btn" onclick="dkExport()">⬆ Export</div>
         <div class="dk-hdr-btn" onclick="dkTab('map');if(!DEV._mapLoaded){dkmInit();DEV._mapLoaded=true;}">🗺 Map</div>
         <div class="dk-hdr-btn" onclick="dkTogglePanel()">✕ Close</div>
@@ -1208,6 +1282,31 @@ body{height:100%;background:var(--bg0);color:var(--t1);font-family:-apple-system
     </div>
   </div>
 
+  <!-- AI ASSISTANT — full-screen chat panel -->
+  <div id="ai-panel">
+    <div id="ai-hdr">
+      <div id="ai-hdr-back" onclick="closeAiPanel()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      </div>
+      <div id="ai-hdr-title">AI Assistant</div>
+      <div id="ai-hdr-copy" onclick="copyAiThread()" title="Copy whole conversation">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      </div>
+      <div id="ai-hdr-clear" onclick="clearAiThread()" title="Clear conversation">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+      </div>
+    </div>
+    <div id="ai-body">
+      <div id="ai-messages"></div>
+    </div>
+    <div id="ai-input-row">
+      <textarea id="ai-input" placeholder="Ask about your workouts, exercises, or progress…" rows="1" oninput="_aiAutoGrow(this)" onkeydown="_aiInputKeydown(event)"></textarea>
+      <div id="ai-send-btn" onclick="sendAiMessage()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </div>
+    </div>
+  </div>
+
   <!-- NUMPAD — session numeric input panel -->
   <div id="numpad">
     <div id="numpad-tab" onclick="npToggleMinimize()">
@@ -1296,22 +1395,98 @@ var DEV = {
 };
 
 const DK_KEY = 'workoutdb_devlog';
-const DK_APIKEY_KEY = 'workoutdb_devkit_apikey';
+const DK_APIKEY_KEY = 'workoutdb_devkit_apikey'; // legacy storage location, kept for back-compat
 
+// Canonical API key getter/setter — Settings screen (db.settings.anthropicApiKey) is the
+// source of truth. Falls back to the old DevKit-only localStorage key if Settings hasn't
+// been touched yet (e.g. upgrading from a version before the Settings screen existed),
+// and keeps both locations in sync so the DevKit AI agent and the Settings screen never
+// disagree about which key is active.
 function dkGetApiKey() {
-  try { return localStorage.getItem(DK_APIKEY_KEY) || ''; } catch(e){ return ''; }
+  try {
+    if(typeof db !== 'undefined' && db.settings && db.settings.anthropicApiKey) {
+      return db.settings.anthropicApiKey;
+    }
+    return localStorage.getItem(DK_APIKEY_KEY) || '';
+  } catch(e){ return ''; }
 }
 function dkSetApiKey(key) {
-  try { localStorage.setItem(DK_APIKEY_KEY, key.trim()); } catch(e){}
+  var trimmed = (key||'').trim();
+  try {
+    if(typeof db !== 'undefined' && db.settings) { db.settings.anthropicApiKey = trimmed; saveDB(); }
+    localStorage.setItem(DK_APIKEY_KEY, trimmed); // keep legacy key in sync
+  } catch(e){}
 }
 function dkClearApiKey() {
-  try { localStorage.removeItem(DK_APIKEY_KEY); } catch(e){}
+  try {
+    if(typeof db !== 'undefined' && db.settings) { db.settings.anthropicApiKey = ''; saveDB(); }
+    localStorage.removeItem(DK_APIKEY_KEY);
+  } catch(e){}
+}
+// User-configurable model string (Settings screen). Never hardcode a model ID
+// elsewhere in the app — Anthropic deprecates dated snapshots over time, and
+// without this the app would silently break against a retired model with no
+// way for the user to fix it short of editing the file.
+var DK_DEFAULT_MODEL = 'claude-haiku-4-5';
+function dkGetModel() {
+  try {
+    if(typeof db !== 'undefined' && db.settings && db.settings.aiModel) return db.settings.aiModel;
+  } catch(e){}
+  return DK_DEFAULT_MODEL;
 }
 
 // Embedded code map for AI agent — function names, params, and line numbers
 // Regenerated each build; used to give Haiku structural code context without
 // sending the full HTML file on every request.
-const DK_CODE_MAP = {"version":"WorkoutDB v2.8.4","totalLines":6494,"functions":[{"fn":"dkLoadLog","params":"","line":1166},{"fn":"dkSaveLog","params":"log","line":1169},{"fn":"dkHeaderTap","params":"","line":1174},{"fn":"dkSetVisible","params":"on","line":1184},{"fn":"dkTogglePanel","params":"","line":1192},{"fn":"dkTab","params":"name","line":1206},{"fn":"dkRenderTab","params":"name","line":1222},{"fn":"dkSelCat","params":"cat","line":1230},{"fn":"dkSubmit","params":"","line":1238},{"fn":"dkRenderEntries","params":"","line":1264},{"fn":"entryHTML","params":"e, compact","line":1269},{"fn":"dkSetStatus","params":"id, status","line":1317},{"fn":"dkSetFilter","params":"filter","line":1327},{"fn":"dkDeleteEntry","params":"id","line":1336},{"fn":"dkRenderState","params":"","line":1342},{"fn":"_escHtml","params":"s","line":1360},{"fn":"dkToggleInspect","params":"","line":1365},{"fn":"dkRenderRefChip","params":"","line":1436},{"fn":"dkClearRef","params":"","line":1454},{"fn":"dkSessionBrief","params":"","line":1462},{"fn":"dkExport","params":"","line":1510},{"fn":"eqLabel","params":"id","line":1547},{"fn":"eqIcon","params":"id","line":1548},{"fn":"loadDB","params":"","line":1550},{"fn":"saveDB","params":"","line":1554},{"fn":"freshDB","params":"","line":1557},{"fn":"_touchDebounce","params":"","line":1977},{"fn":"npOpen","params":"ei, si, field","line":1984},{"fn":"npClose","params":"","line":2012},{"fn":"npToggleMinimize","params":"","line":2025},{"fn":"npNavSet","params":"dir","line":2040},{"fn":"_npScrollToActiveRow","params":"ei, si","line":2071},{"fn":"npSwitchField","params":"field","line":2088},{"fn":"_npRender","params":"","line":2098},{"fn":"_npCommitVal","params":"","line":2151},{"fn":"npKey","params":"k","line":2166},{"fn":"npLog","params":"","line":2196},{"fn":"_npAdvanceToNextReps","params":"ei, si","line":2251},{"fn":"fmt","params":"secs","line":2326},{"fn":"pad","params":"n","line":2332},{"fn":"qs","params":"sel,ctx","line":2333},{"fn":"qsa","params":"sel,ctx","line":2334},{"fn":"toast","params":"msg","line":2338},{"fn":"openModal","params":"title, html","line":2345},{"fn":"closeModal","params":"","line":2350},{"fn":"navTo","params":"sid","line":2365},{"fn":"_setLogState","params":"state","line":2388},{"fn":"handleBack","params":"","line":2395},{"fn":"fabAction","params":"","line":2396},{"fn":"renderHome","params":"","line":2402},{"fn":"_statCard","params":"val, lbl, action","line":2469},{"fn":"sessCardHTML","params":"s","line":2477},{"fn":"_initPlan","params":"","line":2503},{"fn":"renderPlanner","params":"","line":2515},{"fn":"togglePlanMuscle","params":"m, el","line":2548},{"fn":"togglePlanPhase","params":"phase","line":2556},{"fn":"_renderPlanPhase","params":"phase","line":2565},{"fn":"_refreshPlanSummary","params":"gi","line":2690},{"fn":"togglePlanCard","params":"gi","line":2701},{"fn":"setPlanRest","params":"gi, secs","line":2709},{"fn":"setPlanSS","params":"gi, group","line":2724},{"fn":"planMoveEx","params":"gi, dir","line":2731},{"fn":"planRemoveEx","params":"gi","line":2746},{"fn":"openPlanExConfig","params":"gi","line":2752},{"fn":"savePlanExConfig","params":"gi, reset","line":2837},{"fn":"planMoveExPhase","params":"gi","line":2873},{"fn":"confirmPlanMovePhase","params":"gi, newPhase","line":2895},{"fn":"planAddEx","params":"phase","line":2906},{"fn":"buildHTML","params":"filter","line":2911},{"fn":"_ppRebuild","params":"","line":2975},{"fn":"planQueueEx","params":"id","line":2981},{"fn":"planConfirmQueue","params":"","line":3010},{"fn":"planLoadPreset","params":"","line":3037},{"fn":"_applyPresetToPlan","params":"presetId, mode","line":3062},{"fn":"launchPlan","params":"","line":3103},{"fn":"_inferMuscles","params":"entries","line":3192},{"fn":"savePlanAsPreset","params":"","line":3201},{"fn":"confirmSavePlanAsPreset","params":"","line":3211},{"fn":"clearPlan","params":"","line":3233},{"fn":"startNewSession","params":"","line":3241},{"fn":"tickSessionTimer","params":"","line":3243},{"fn":"renderSession","params":"","line":3264},{"fn":"togglePhase","params":"phase","line":3332},{"fn":"renderStretchCard","params":"ex, ei, exDef","line":3340},{"fn":"startHoldTimer","params":"ei, si","line":3448},{"fn":"pauseHoldTimer","params":"ei, si","line":3477},{"fn":"adjustHoldTime","params":"ei, si, delta","line":3488},{"fn":"logStretchSet","params":"ei, si, event","line":3504},{"fn":"unlogStretchSet","params":"ei, si","line":3529},{"fn":"addStretchSet","params":"ei","line":3537},{"fn":"_getLastExNote","params":"exId","line":3547},{"fn":"renderExNoteSection","params":"ex, ei","line":3556},{"fn":"toggleExNote","params":"ei","line":3569},{"fn":"renderMiniCard","params":"ex,ei,exDef","line":3587},{"fn":"toggleMinimize","params":"ei","line":3655},{"fn":"finishExercise","params":"ei","line":3661},{"fn":"renderStrengthCard","params":"ex,ei,exDef","line":3668},{"fn":"setExEquip","params":"ei,equipId","line":3804},{"fn":"setExPosition","params":"ei,pos","line":3805},{"fn":"openExConfig","params":"ei","line":3808},{"fn":"cfgSaveSettings","params":"ei","line":3880},{"fn":"_cfgRefreshMeta","params":"ei","line":3892},{"fn":"cfgSetEquip","params":"ei, equipId, el","line":3908},{"fn":"cfgMoreEquip","params":"ei","line":3918},{"fn":"cfgSetPosition","params":"ei, pos, el","line":3927},{"fn":"cfgSetLogMode","params":"ei, mode","line":3938},{"fn":"cfgSetRest","params":"ei, secs, el","line":3952},{"fn":"openMoreEquip","params":"ei","line":3963},{"fn":"adjustWeight","params":"ei, si, delta","line":3978},{"fn":"setSsGroup","params":"ei, group","line":3996},{"fn":"toggleExEquip","params":"ei, equipId","line":4003},{"fn":"renderCardioExCard","params":"ex, ei, exDef","line":4015},{"fn":"startCardioTimer","params":"ei","line":4124},{"fn":"adjustCardioLevel","params":"ei, delta","line":4154},{"fn":"pauseCardioTimer","params":"ei","line":4167},{"fn":"resumeCardioTimer","params":"ei","line":4179},{"fn":"stopCardioTimer","params":"ei","line":4188},{"fn":"clearCardioTimer","params":"ei","line":4219},{"fn":"setCardioField","params":"ei, field, val","line":4230},{"fn":"updateCardioTimerDisplay","params":"ei","line":4236},{"fn":"toggleCardioDone","params":"ei","line":4243},{"fn":"prevHint","params":"exId, sessId","line":4250},{"fn":"getPrevWeight","params":"exId","line":4281},{"fn":"addSet","params":"ei","line":4301},{"fn":"_revealNextSet","params":"ei","line":4323},{"fn":"addWarmupSet","params":"ei","line":4371},{"fn":"setField","params":"ei,si,f,v","line":4381},{"fn":"onWeightBlur","params":"ei,si","line":4388},{"fn":"autoCompleteSet","params":"ei,si","line":4416},{"fn":"_advanceFocusAfterLog","params":"ei, si","line":4464},{"fn":"updateProgressBar","params":"","line":4532},{"fn":"advanceFocus","params":"event,ei,si,field","line":4548},{"fn":"toggleSet","params":"ei,si","line":4562},{"fn":"handleLogSet","params":"ei, si, event","line":4571},{"fn":"removeEx","params":"ei","line":4632},{"fn":"renderAbSection","params":"ex, ei","line":4635},{"fn":"toggleAbMode","params":"ei","line":4707},{"fn":"openAbPicker","params":"ei","line":4715},{"fn":"setAbExercise","params":"ei, exId, exName","line":4734},{"fn":"logAbSet","params":"ei, abIdx, event","line":4745},{"fn":"adjustAbWeight","params":"ei, abIdx, delta","line":4772},{"fn":"unlogAbSet","params":"ei, abIdx","line":4780},{"fn":"removeSet","params":"ei, si","line":4789},{"fn":"addExToSession","params":"phase","line":4797},{"fn":"buildPickerHTML","params":"filter","line":4809},{"fn":"refreshPickerFilter","params":"q","line":4837},{"fn":"togglePickGroup","params":"id,hdrEl","line":4838},{"fn":"pickEx","params":"id","line":4839},{"fn":"pickEquipSingle","params":"el,id","line":4884},{"fn":"openMoreEquipPicker","params":"","line":4885},{"fn":"pickEquipSingleById","params":"id","line":4892},{"fn":"pickPos","params":"el,pos","line":4896},{"fn":"confirmPickEx","params":"id","line":4897},{"fn":"startCooldown","params":"","line":4915},{"fn":"stopCooldown","params":"","line":4927},{"fn":"endSession","params":"","line":4935},{"fn":"confirmFinishSession","params":"","line":4963},{"fn":"finishSession","params":"","line":5001},{"fn":"startRestTimer","params":"secs, anchorEi","line":5004},{"fn":"updateRestDisplay","params":"","line":5031},{"fn":"skipRest","params":"","line":5060},{"fn":"_focusNextSetAfterRest","params":"anchorEi","line":5071},{"fn":"addRestTime","params":"s","line":5123},{"fn":"renderExercises","params":"","line":5145},{"fn":"toggleExCat","params":"catKey","line":5275},{"fn":"toggleExFilter","params":"muscle","line":5284},{"fn":"toggleExCatFilter","params":"catKey","line":5291},{"fn":"clearExFilter","params":"","line":5305},{"fn":"toggleExGroup","params":"id, hdrEl","line":5310},{"fn":"openAddExModal","params":"exId","line":5320},{"fn":"saveEx","params":"id","line":5349},{"fn":"deleteEx","params":"id","line":5380},{"fn":"openExDetail","params":"id","line":5382},{"fn":"viewExerciseNotes","params":"exId","line":5441},{"fn":"renderHistory","params":"","line":5461},{"fn":"viewSession","params":"id","line":5467},{"fn":"buildOrderedGroups","params":"exercises","line":5473},{"fn":"_isCardio","params":"ex","line":5505},{"fn":"_exName","params":"ex","line":5509},{"fn":"_cardioCard","params":"ex","line":5516},{"fn":"_strengthCard","params":"ex, label, color","line":5530},{"fn":"_ssGroupCard","params":"group, exercises","line":5565},{"fn":"renameSession","params":"id","line":5631},{"fn":"confirmRenameSession","params":"id","line":5641},{"fn":"deleteSession","params":"id","line":5652},{"fn":"renderCalendar","params":"","line":5660},{"fn":"calPrev","params":"","line":5685},{"fn":"calNext","params":"","line":5686},{"fn":"calClick","params":"yr,mo,d","line":5687},{"fn":"moveEx","params":"ei, dir","line":5698},{"fn":"_syncPhaseTimerUI","params":"phase, elapsed, running, stopped","line":5722},{"fn":"togglePhaseTimer","params":"phase","line":5739},{"fn":"stopPhaseTimer","params":"phase","line":5756},{"fn":"stopAllPhaseTimers","params":"","line":5794},{"fn":"setPhaseTimerManual","params":"phase, val","line":5802},{"fn":"autoStartPhaseTimer","params":"phase","line":5824},{"fn":"autoStopWarmupIfNeeded","params":"","line":5830},{"fn":"getAudioCtx","params":"","line":5850},{"fn":"playRestBeep","params":"","line":5859},{"fn":"renderPresets","params":"","line":5898},{"fn":"renderGroup","params":"list","line":5907},{"fn":"openAddPresetModal","params":"preexistingName, preexistingExIds","line":5932},{"fn":"togglePresetEx","params":"rowEl, id","line":5960},{"fn":"savePreset","params":"","line":5975},{"fn":"viewPreset","params":"id","line":5989},{"fn":"openPresetSwapPicker","params":"presetId, exIdx","line":6029},{"fn":"doSwapPresetEx","params":"presetId, exIdx, newExId","line":6073},{"fn":"removePresetExercise","params":"presetId, exIdx","line":6087},{"fn":"openAddExToPreset","params":"presetId","line":6101},{"fn":"addExToPreset","params":"presetId, exId","line":6127},{"fn":"savePresetAsNew","params":"sourceId","line":6140},{"fn":"confirmSavePresetAsNew","params":"sourceId","line":6150},{"fn":"loadPreset","params":"id","line":6171},{"fn":"saveCurrentAsPreset","params":"","line":6230},{"fn":"deletePreset","params":"id","line":6236},{"fn":"openBackupModal","params":"","line":6242},{"fn":"_buildBackupPayload","params":"","line":6270},{"fn":"exportBackup","params":"","line":6286},{"fn":"exportBackupText","params":"","line":6309},{"fn":"_fallbackCopyText","params":"text","line":6323},{"fn":"handleImportFile","params":"input","line":6338},{"fn":"_migrateImport","params":"imported","line":6378},{"fn":"confirmImport","params":"mode","line":6438}],"keyIds":["ab-row-","abreps-","abwt-","app","cal-detail","cal-view","cfg-cable-","cfg-equip-","cfg-mode-hold-","cfg-mode-reps-","cfg-rest-","cfg-seat-","clt-","clv-","content","csave-","dk-body","dk-cats","dk-entries-list","dk-filter-row","dk-hdr","dk-hdr-title","dk-inspect-banner","dk-inspect-btn","dk-inspect-overlay","dk-log-form","dk-log-list","dk-msg","dk-pane-entries","dk-pane-log","dk-pane-state","dk-panel","dk-state","dk-tabs","dk-toggle","dk-version","ex-list","ex-pick","ex-srch","exc-","excat-","excatbody-","excatchev-","exf-equip","exf-logmode-hold","exf-logmode-reps","exf-muscles","exf-name","exf-notes","exf-pos","exmeta-","exname-","exnote-","fab","finish-notes","hct-","hdr","hdr-action","hdr-back","hdr-title","hist-list","home-grid","home-hero","home-recent","home-recent-wrap","home-stats","import-file-input","log-btn-","log-hdr","mini-rest-","modal-body","modal-overlay","modal-sheet","modal-title-txt","nav","nav-exercises","nav-history","nav-home","nav-log","nav-presets"]};
+let DK_CODE_MAP = {"version":"WorkoutDB v2.8.4","totalLines":6494,"functions":[{"fn":"dkLoadLog","params":"","line":1166},{"fn":"dkSaveLog","params":"log","line":1169},{"fn":"dkHeaderTap","params":"","line":1174},{"fn":"dkSetVisible","params":"on","line":1184},{"fn":"dkTogglePanel","params":"","line":1192},{"fn":"dkTab","params":"name","line":1206},{"fn":"dkRenderTab","params":"name","line":1222},{"fn":"dkSelCat","params":"cat","line":1230},{"fn":"dkSubmit","params":"","line":1238},{"fn":"dkRenderEntries","params":"","line":1264},{"fn":"entryHTML","params":"e, compact","line":1269},{"fn":"dkSetStatus","params":"id, status","line":1317},{"fn":"dkSetFilter","params":"filter","line":1327},{"fn":"dkDeleteEntry","params":"id","line":1336},{"fn":"dkRenderState","params":"","line":1342},{"fn":"_escHtml","params":"s","line":1360},{"fn":"dkToggleInspect","params":"","line":1365},{"fn":"dkRenderRefChip","params":"","line":1436},{"fn":"dkClearRef","params":"","line":1454},{"fn":"dkSessionBrief","params":"","line":1462},{"fn":"dkExport","params":"","line":1510},{"fn":"eqLabel","params":"id","line":1547},{"fn":"eqIcon","params":"id","line":1548},{"fn":"loadDB","params":"","line":1550},{"fn":"saveDB","params":"","line":1554},{"fn":"freshDB","params":"","line":1557},{"fn":"_touchDebounce","params":"","line":1977},{"fn":"npOpen","params":"ei, si, field","line":1984},{"fn":"npClose","params":"","line":2012},{"fn":"npToggleMinimize","params":"","line":2025},{"fn":"npNavSet","params":"dir","line":2040},{"fn":"_npScrollToActiveRow","params":"ei, si","line":2071},{"fn":"npSwitchField","params":"field","line":2088},{"fn":"_npRender","params":"","line":2098},{"fn":"_npCommitVal","params":"","line":2151},{"fn":"npKey","params":"k","line":2166},{"fn":"npLog","params":"","line":2196},{"fn":"_npAdvanceToNextReps","params":"ei, si","line":2251},{"fn":"fmt","params":"secs","line":2326},{"fn":"pad","params":"n","line":2332},{"fn":"qs","params":"sel,ctx","line":2333},{"fn":"qsa","params":"sel,ctx","line":2334},{"fn":"toast","params":"msg","line":2338},{"fn":"openModal","params":"title, html","line":2345},{"fn":"closeModal","params":"","line":2350},{"fn":"navTo","params":"sid","line":2365},{"fn":"_setLogState","params":"state","line":2388},{"fn":"handleBack","params":"","line":2395},{"fn":"fabAction","params":"","line":2396},{"fn":"renderHome","params":"","line":2402},{"fn":"_statCard","params":"val, lbl, action","line":2469},{"fn":"sessCardHTML","params":"s","line":2477},{"fn":"_initPlan","params":"","line":2503},{"fn":"renderPlanner","params":"","line":2515},{"fn":"togglePlanMuscle","params":"m, el","line":2548},{"fn":"togglePlanPhase","params":"phase","line":2556},{"fn":"_renderPlanPhase","params":"phase","line":2565},{"fn":"_refreshPlanSummary","params":"gi","line":2690},{"fn":"togglePlanCard","params":"gi","line":2701},{"fn":"setPlanRest","params":"gi, secs","line":2709},{"fn":"setPlanSS","params":"gi, group","line":2724},{"fn":"planMoveEx","params":"gi, dir","line":2731},{"fn":"planRemoveEx","params":"gi","line":2746},{"fn":"openPlanExConfig","params":"gi","line":2752},{"fn":"savePlanExConfig","params":"gi, reset","line":2837},{"fn":"planMoveExPhase","params":"gi","line":2873},{"fn":"confirmPlanMovePhase","params":"gi, newPhase","line":2895},{"fn":"planAddEx","params":"phase","line":2906},{"fn":"buildHTML","params":"filter","line":2911},{"fn":"_ppRebuild","params":"","line":2975},{"fn":"planQueueEx","params":"id","line":2981},{"fn":"planConfirmQueue","params":"","line":3010},{"fn":"planLoadPreset","params":"","line":3037},{"fn":"_applyPresetToPlan","params":"presetId, mode","line":3062},{"fn":"launchPlan","params":"","line":3103},{"fn":"_inferMuscles","params":"entries","line":3192},{"fn":"savePlanAsPreset","params":"","line":3201},{"fn":"confirmSavePlanAsPreset","params":"","line":3211},{"fn":"clearPlan","params":"","line":3233},{"fn":"startNewSession","params":"","line":3241},{"fn":"tickSessionTimer","params":"","line":3243},{"fn":"renderSession","params":"","line":3264},{"fn":"togglePhase","params":"phase","line":3332},{"fn":"renderStretchCard","params":"ex, ei, exDef","line":3340},{"fn":"startHoldTimer","params":"ei, si","line":3448},{"fn":"pauseHoldTimer","params":"ei, si","line":3477},{"fn":"adjustHoldTime","params":"ei, si, delta","line":3488},{"fn":"logStretchSet","params":"ei, si, event","line":3504},{"fn":"unlogStretchSet","params":"ei, si","line":3529},{"fn":"addStretchSet","params":"ei","line":3537},{"fn":"_getLastExNote","params":"exId","line":3547},{"fn":"renderExNoteSection","params":"ex, ei","line":3556},{"fn":"toggleExNote","params":"ei","line":3569},{"fn":"renderMiniCard","params":"ex,ei,exDef","line":3587},{"fn":"toggleMinimize","params":"ei","line":3655},{"fn":"finishExercise","params":"ei","line":3661},{"fn":"renderStrengthCard","params":"ex,ei,exDef","line":3668},{"fn":"setExEquip","params":"ei,equipId","line":3804},{"fn":"setExPosition","params":"ei,pos","line":3805},{"fn":"openExConfig","params":"ei","line":3808},{"fn":"cfgSaveSettings","params":"ei","line":3880},{"fn":"_cfgRefreshMeta","params":"ei","line":3892},{"fn":"cfgSetEquip","params":"ei, equipId, el","line":3908},{"fn":"cfgMoreEquip","params":"ei","line":3918},{"fn":"cfgSetPosition","params":"ei, pos, el","line":3927},{"fn":"cfgSetLogMode","params":"ei, mode","line":3938},{"fn":"cfgSetRest","params":"ei, secs, el","line":3952},{"fn":"openMoreEquip","params":"ei","line":3963},{"fn":"adjustWeight","params":"ei, si, delta","line":3978},{"fn":"setSsGroup","params":"ei, group","line":3996},{"fn":"toggleExEquip","params":"ei, equipId","line":4003},{"fn":"renderCardioExCard","params":"ex, ei, exDef","line":4015},{"fn":"startCardioTimer","params":"ei","line":4124},{"fn":"adjustCardioLevel","params":"ei, delta","line":4154},{"fn":"pauseCardioTimer","params":"ei","line":4167},{"fn":"resumeCardioTimer","params":"ei","line":4179},{"fn":"stopCardioTimer","params":"ei","line":4188},{"fn":"clearCardioTimer","params":"ei","line":4219},{"fn":"setCardioField","params":"ei, field, val","line":4230},{"fn":"updateCardioTimerDisplay","params":"ei","line":4236},{"fn":"toggleCardioDone","params":"ei","line":4243},{"fn":"prevHint","params":"exId, sessId","line":4250},{"fn":"getPrevWeight","params":"exId","line":4281},{"fn":"addSet","params":"ei","line":4301},{"fn":"_revealNextSet","params":"ei","line":4323},{"fn":"addWarmupSet","params":"ei","line":4371},{"fn":"setField","params":"ei,si,f,v","line":4381},{"fn":"onWeightBlur","params":"ei,si","line":4388},{"fn":"autoCompleteSet","params":"ei,si","line":4416},{"fn":"_advanceFocusAfterLog","params":"ei, si","line":4464},{"fn":"updateProgressBar","params":"","line":4532},{"fn":"advanceFocus","params":"event,ei,si,field","line":4548},{"fn":"toggleSet","params":"ei,si","line":4562},{"fn":"handleLogSet","params":"ei, si, event","line":4571},{"fn":"removeEx","params":"ei","line":4632},{"fn":"renderAbSection","params":"ex, ei","line":4635},{"fn":"toggleAbMode","params":"ei","line":4707},{"fn":"openAbPicker","params":"ei","line":4715},{"fn":"setAbExercise","params":"ei, exId, exName","line":4734},{"fn":"logAbSet","params":"ei, abIdx, event","line":4745},{"fn":"adjustAbWeight","params":"ei, abIdx, delta","line":4772},{"fn":"unlogAbSet","params":"ei, abIdx","line":4780},{"fn":"removeSet","params":"ei, si","line":4789},{"fn":"addExToSession","params":"phase","line":4797},{"fn":"buildPickerHTML","params":"filter","line":4809},{"fn":"refreshPickerFilter","params":"q","line":4837},{"fn":"togglePickGroup","params":"id,hdrEl","line":4838},{"fn":"pickEx","params":"id","line":4839},{"fn":"pickEquipSingle","params":"el,id","line":4884},{"fn":"openMoreEquipPicker","params":"","line":4885},{"fn":"pickEquipSingleById","params":"id","line":4892},{"fn":"pickPos","params":"el,pos","line":4896},{"fn":"confirmPickEx","params":"id","line":4897},{"fn":"startCooldown","params":"","line":4915},{"fn":"stopCooldown","params":"","line":4927},{"fn":"endSession","params":"","line":4935},{"fn":"confirmFinishSession","params":"","line":4963},{"fn":"finishSession","params":"","line":5001},{"fn":"startRestTimer","params":"secs, anchorEi","line":5004},{"fn":"updateRestDisplay","params":"","line":5031},{"fn":"skipRest","params":"","line":5060},{"fn":"_focusNextSetAfterRest","params":"anchorEi","line":5071},{"fn":"addRestTime","params":"s","line":5123},{"fn":"renderExercises","params":"","line":5145},{"fn":"toggleExCat","params":"catKey","line":5275},{"fn":"toggleExFilter","params":"muscle","line":5284},{"fn":"toggleExCatFilter","params":"catKey","line":5291},{"fn":"clearExFilter","params":"","line":5305},{"fn":"toggleExGroup","params":"id, hdrEl","line":5310},{"fn":"openAddExModal","params":"exId","line":5320},{"fn":"saveEx","params":"id","line":5349},{"fn":"deleteEx","params":"id","line":5380},{"fn":"openExDetail","params":"id","line":5382},{"fn":"viewExerciseNotes","params":"exId","line":5441},{"fn":"renderHistory","params":"","line":5461},{"fn":"viewSession","params":"id","line":5467},{"fn":"buildOrderedGroups","params":"exercises","line":5473},{"fn":"_isCardio","params":"ex","line":5505},{"fn":"_exName","params":"ex","line":5509},{"fn":"_cardioCard","params":"ex","line":5516},{"fn":"_strengthCard","params":"ex, label, color","line":5530},{"fn":"_ssGroupCard","params":"group, exercises","line":5565},{"fn":"renameSession","params":"id","line":5631},{"fn":"confirmRenameSession","params":"id","line":5641},{"fn":"deleteSession","params":"id","line":5652},{"fn":"renderCalendar","params":"","line":5660},{"fn":"calPrev","params":"","line":5685},{"fn":"calNext","params":"","line":5686},{"fn":"calClick","params":"yr,mo,d","line":5687},{"fn":"moveEx","params":"ei, dir","line":5698},{"fn":"_syncPhaseTimerUI","params":"phase, elapsed, running, stopped","line":5722},{"fn":"togglePhaseTimer","params":"phase","line":5739},{"fn":"stopPhaseTimer","params":"phase","line":5756},{"fn":"stopAllPhaseTimers","params":"","line":5794},{"fn":"setPhaseTimerManual","params":"phase, val","line":5802},{"fn":"autoStartPhaseTimer","params":"phase","line":5824},{"fn":"autoStopWarmupIfNeeded","params":"","line":5830},{"fn":"getAudioCtx","params":"","line":5850},{"fn":"playRestBeep","params":"","line":5859},{"fn":"renderPresets","params":"","line":5898},{"fn":"renderGroup","params":"list","line":5907},{"fn":"openAddPresetModal","params":"preexistingName, preexistingExIds","line":5932},{"fn":"togglePresetEx","params":"rowEl, id","line":5960},{"fn":"savePreset","params":"","line":5975},{"fn":"viewPreset","params":"id","line":5989},{"fn":"openPresetSwapPicker","params":"presetId, exIdx","line":6029},{"fn":"doSwapPresetEx","params":"presetId, exIdx, newExId","line":6073},{"fn":"removePresetExercise","params":"presetId, exIdx","line":6087},{"fn":"openAddExToPreset","params":"presetId","line":6101},{"fn":"addExToPreset","params":"presetId, exId","line":6127},{"fn":"savePresetAsNew","params":"sourceId","line":6140},{"fn":"confirmSavePresetAsNew","params":"sourceId","line":6150},{"fn":"loadPreset","params":"id","line":6171},{"fn":"saveCurrentAsPreset","params":"","line":6230},{"fn":"deletePreset","params":"id","line":6236},{"fn":"openBackupModal","params":"","line":6242},{"fn":"_buildBackupPayload","params":"","line":6270},{"fn":"exportBackup","params":"","line":6286},{"fn":"exportBackupText","params":"","line":6309},{"fn":"_fallbackCopyText","params":"text","line":6323},{"fn":"handleImportFile","params":"input","line":6338},{"fn":"_migrateImport","params":"imported","line":6378},{"fn":"confirmImport","params":"mode","line":6438}],"keyIds":["ab-row-","abreps-","abwt-","app","cal-detail","cal-view","cfg-cable-","cfg-equip-","cfg-mode-hold-","cfg-mode-reps-","cfg-rest-","cfg-seat-","clt-","clv-","content","csave-","dk-body","dk-cats","dk-entries-list","dk-filter-row","dk-hdr","dk-hdr-title","dk-inspect-banner","dk-inspect-btn","dk-inspect-overlay","dk-log-form","dk-log-list","dk-msg","dk-pane-entries","dk-pane-log","dk-pane-state","dk-panel","dk-state","dk-tabs","dk-toggle","dk-version","ex-list","ex-pick","ex-srch","exc-","excat-","excatbody-","excatchev-","exf-equip","exf-logmode-hold","exf-logmode-reps","exf-muscles","exf-name","exf-notes","exf-pos","exmeta-","exname-","exnote-","fab","finish-notes","hct-","hdr","hdr-action","hdr-back","hdr-title","hist-list","home-grid","home-hero","home-recent","home-recent-wrap","home-stats","import-file-input","log-btn-","log-hdr","mini-rest-","modal-body","modal-overlay","modal-sheet","modal-title-txt","nav","nav-exercises","nav-history","nav-home","nav-log","nav-presets"]};
+
+// Rebuilds DK_CODE_MAP from the actual running script, replacing the static
+// (and inevitably stale) embedded snapshot above. This was previously a
+// hand-maintained constant that nobody updated on every edit — exactly the
+// kind of silent drift this function exists to eliminate. Called automatically
+// whenever the DevKit panel opens (see dkTogglePanel), so the map is always
+// current without anyone having to remember to regenerate it.
+function dkRegenerateCodeMap() {
+  try {
+    var scriptText = '';
+    // Find our own <script> tag's raw source text at runtime
+    for(var i=0;i<document.scripts.length;i++){
+      var s = document.scripts[i];
+      if(s.textContent && s.textContent.indexOf('DK_CODE_MAP') >= 0) { scriptText = s.textContent; break; }
+    }
+    if(!scriptText) return false;
+    var lines = scriptText.split('\n');
+    var functions = [];
+    var fnRe = /^function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(([^)]*)\)/;
+    lines.forEach(function(line, idx){
+      var m = line.match(fnRe);
+      if(m) functions.push({ fn: m[1], params: m[2].trim(), line: idx+1 });
+    });
+    // Collect distinct id="..." values referenced via getElementById and id="" attrs,
+    // truncated to a reasonable prefix set (mirrors the original keyIds intent —
+    // a quick-reference list, not exhaustive).
+    var idSet = {};
+    var idAttrRe = /\bid=["']([a-zA-Z0-9_-]+)["']/g;
+    var getElRe = /getElementById\(['"]([a-zA-Z0-9_-]+)['"]\)/g;
+    var htmlSrc = document.documentElement.outerHTML;
+    var match;
+    while((match = idAttrRe.exec(htmlSrc))) idSet[match[1]] = true;
+    while((match = getElRe.exec(scriptText))) idSet[match[1]] = true;
+    var keyIds = Object.keys(idSet).sort();
+
+    DK_CODE_MAP = {
+      version: 'WorkoutDB ' + APP_VERSION,
+      totalLines: lines.length,
+      functions: functions,
+      keyIds: keyIds,
+      regeneratedAt: new Date().toISOString()
+    };
+    return true;
+  } catch(e) {
+    console.warn('[DevKit] Code map regeneration failed:', e);
+    return false;
+  }
+}
 
 function dkLoadLog() {
   try { return JSON.parse(localStorage.getItem(DK_KEY)||'[]'); } catch(e){ return []; }
@@ -1346,6 +1521,7 @@ function dkTogglePanel() {
   if(panel) panel.classList.toggle('open', DEV.active);
   if(btn) btn.classList.toggle('active', DEV.active);
   if(DEV.active) {
+    dkRegenerateCodeMap(); // keep the code map current — never rely on the stale static snapshot
     dkRenderTab(DEV.activeTab);
     // Reflect key status in header button
     var keyBtn = document.getElementById('dk-key-btn');
@@ -1547,7 +1723,7 @@ function dkApiKeyModal() {
       (current ? '<button class="btn btn-ghost" style="color:var(--red);border-color:rgba(232,93,76,0.3)" onclick="dkRemoveApiKey()">Remove</button>' : '')+
     '</div>'+
     '<div style="font-size:11px;color:var(--t3);margin-top:10px">'+
-      'Get a key at console.anthropic.com. The devkit uses claude-haiku-4-5 (low cost).'+
+      'Get a key at console.anthropic.com. Model used: '+_escHtml(dkGetModel())+' — change this in Settings.'+
     '</div>'
   );
   setTimeout(function(){
@@ -1629,7 +1805,7 @@ function dkAskAI(entryId) {
     '<div id="dk-ai-out" style="font-size:13px;color:var(--t2);line-height:1.6;min-height:80px;padding:10px;background:var(--bg2);border-radius:8px;border:1px solid var(--border1)">'+
       '<span style="color:var(--t3)">Analyzing with Haiku...</span>'+
     '</div>'+
-    '<div style="font-size:10px;color:var(--t3);margin-top:8px">claude-haiku-4-5 | Code map: '+DK_CODE_MAP.functions.length+' functions, '+DK_CODE_MAP.totalLines+' lines</div>'
+    '<div style="font-size:10px;color:var(--t3);margin-top:8px">'+_escHtml(dkGetModel())+' | Code map: '+DK_CODE_MAP.functions.length+' functions, '+DK_CODE_MAP.totalLines+' lines</div>'
   );
 
   // Check for API key before calling
@@ -1652,7 +1828,7 @@ function dkAskAI(entryId) {
       'anthropic-dangerous-direct-browser-access': 'true'
     },
     body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
+      model: dkGetModel(),
       max_tokens: 600,
       system: systemPrompt,
       messages: [{ role: 'user', content: userMsg }]
@@ -1772,7 +1948,7 @@ function dkReviewAndExport() {
         'anthropic-dangerous-direct-browser-access': 'true'
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: dkGetModel(),
         max_tokens: 400,
         system: prompts.system,
         messages: [{ role: 'user', content: prompts.user }]
@@ -2734,7 +2910,7 @@ function dkExport() {
 
 /* === DATA === */
 const DB_KEY = 'workoutdb_v1';
-const APP_VERSION = 'v2.9.0';
+const APP_VERSION = 'v2.9.6';
 const SCHEMA_VERSION = 5; // increment each release that changes db structure
 const MUSCLES = ['Chest','Back','Shoulders','Biceps','Triceps','Forearms','Abs','Hips','Lower Back','Quads','Hamstrings','Glutes','Calves','Full Body','Stretching','Cardio'];
 
@@ -2820,6 +2996,55 @@ function loadDB() {
 function saveDB() {
   try { localStorage.setItem(DB_KEY, JSON.stringify(db)); } catch(e) {}
 }
+
+// ── CRASH RECOVERY: continuous draft autosave for the active session ──────
+// G.sess is normally only persisted to db.sessions at endSession(). If iOS
+// reclaims the backgrounded tab's memory (common after extended time away,
+// e.g. screen lock), the entire in-memory JS context is destroyed and all
+// progress is lost on relaunch. To prevent this, every set log / meaningful
+// session mutation triggers a debounced write of a *snapshot* of G.sess into
+// db.activeSessionDraft, which IS part of the persisted db object. On
+// startup, if a draft exists, the user is offered the chance to resume it.
+function _buildSessionDraftSnapshot() {
+  return {
+    session: JSON.parse(JSON.stringify(G.sess)),
+    sessStart: G.sessStart,
+    sessPaused: G.sessPaused,
+    phaseOpen: JSON.parse(JSON.stringify(G.phaseOpen||{})),
+    phaseTimers: JSON.parse(JSON.stringify(G_phaseTimers||{})),
+    // Rest timer (between-set countdown)
+    restEnd: G.restEnd||0,
+    restTotal: G.restTotal||0,
+    restAnchorEi: (G.restAnchorEi!==undefined ? G.restAnchorEi : -1),
+    // Cardio live timer (in-progress cardio exercise being timed)
+    cardioTimerEi: (G.cardioTimerEi!==undefined ? G.cardioTimerEi : -1),
+    cardioTimerStart: G.cardioTimerStart||0,
+    savedAt: Date.now()
+  };
+}
+var _draftSaveTimer = null;
+function saveActiveSessionDraft() {
+  if(!G.sess) return;
+  clearTimeout(_draftSaveTimer);
+  _draftSaveTimer = setTimeout(function(){
+    try { db.activeSessionDraft = _buildSessionDraftSnapshot(); saveDB(); }
+    catch(e) {}
+  }, 400);
+}
+// Immediate (non-debounced) version — used at lifecycle boundaries where the
+// page may be killed before a debounced timer can fire (visibilitychange,
+// pagehide). Safe to call even with no pending changes.
+function saveActiveSessionDraftNow() {
+  if(!G.sess) return;
+  clearTimeout(_draftSaveTimer);
+  try { db.activeSessionDraft = _buildSessionDraftSnapshot(); saveDB(); }
+  catch(e) {}
+}
+function clearActiveSessionDraft() {
+  clearTimeout(_draftSaveTimer);
+  if(db.activeSessionDraft) { db.activeSessionDraft = null; saveDB(); }
+}
+
 function freshDB() {
   return {
     exercises: [
@@ -3190,8 +3415,10 @@ function freshDB() {
       }
     ],
     ids: {exercise:400, session:1, preset:12},
-    settings: {defaultRestSecs:90, weightUnit:'lbs'},
-    schemaVersion: SCHEMA_VERSION
+    settings: {defaultRestSecs:90, weightUnit:'lbs', anthropicApiKey:'', aiModel:'claude-haiku-4-5'},
+    schemaVersion: SCHEMA_VERSION,
+    activeSessionDraft: null,
+    aiChat: []
   };
 }
 
@@ -3310,7 +3537,7 @@ function _runMigrations(silent) {
 
   // ── v4 migrations: settings fields, top-level db fields ──────────────
   // Ensure all expected settings keys exist (safe — never overwrites existing values)
-  var defaultSettings = {defaultRestSecs:90, weightUnit:'lbs'};
+  var defaultSettings = {defaultRestSecs:90, weightUnit:'lbs', anthropicApiKey:'', aiModel:'claude-haiku-4-5'};
   var settingsChanged = false;
   if(!db.settings) { db.settings = defaultSettings; settingsChanged = true; note('Created missing db.settings'); }
   Object.keys(defaultSettings).forEach(function(k){
@@ -3332,6 +3559,41 @@ function _runMigrations(silent) {
   if(!Array.isArray(db.sessions))  { db.sessions  = []; saveDB(); note('Created missing db.sessions array'); }
   if(!Array.isArray(db.presets))   { db.presets   = []; saveDB(); note('Created missing db.presets array'); }
   if(!Array.isArray(db.exercises)) { db.exercises = []; saveDB(); note('Created missing db.exercises array'); }
+
+  // ── v6 migration: in-progress session crash recovery ──────────────────
+  if(db.activeSessionDraft === undefined) {
+    db.activeSessionDraft = null;
+    saveDB();
+    note('Added missing db.activeSessionDraft (session crash-recovery field)');
+  }
+
+  // ── v7 migration: explicit sortable order for presets ──────────────────
+  // Built-ins and custom presets are sorted independently in the UI, so each
+  // group gets its own 0-based order sequence. Preserves current array order
+  // (which is effectively insertion order) the first time this runs.
+  (function _ensurePresetOrder(){
+    if(!Array.isArray(db.presets) || !db.presets.length) return;
+    var needsOrder = db.presets.some(function(p){ return p.order===undefined; });
+    if(!needsOrder) return;
+    var builtinIdx = 0, customIdx = 0;
+    db.presets.forEach(function(p){
+      if(p.order===undefined) {
+        p.order = p.builtin ? builtinIdx++ : customIdx++;
+      } else {
+        if(p.builtin) builtinIdx = Math.max(builtinIdx, p.order+1);
+        else customIdx = Math.max(customIdx, p.order+1);
+      }
+    });
+    saveDB();
+    note('Added sortable order field to presets');
+  })();
+
+  // ── v8 migration: AI assistant conversation log ────────────────────────
+  if(!Array.isArray(db.aiChat)) {
+    db.aiChat = [];
+    saveDB();
+    note('Added missing db.aiChat (AI assistant conversation log)');
+  }
 
   // Auto-patch exercise fields from SCHEMA_FIELDS registry (safe — only adds, never removes)
   (function _patchExerciseFields(){
@@ -3593,6 +3855,248 @@ function suggLoadCustom(muscles) {
   _initPlan();
   G.plan.muscles = muscles.slice();
   navTo('s-log');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AI ASSISTANT — full-screen chat panel, user-facing (not DevKit)
+   Uses the same Anthropic API key/model configured in Settings.
+   Conversation persists in db.aiChat across app restarts.
+   ═══════════════════════════════════════════════════════════════ */
+
+function openAiPanel() {
+  var panel = document.getElementById('ai-panel');
+  if(!panel) return;
+  panel.classList.add('open');
+  renderAiMessages();
+  setTimeout(function(){
+    var body = document.getElementById('ai-body');
+    if(body) body.scrollTop = body.scrollHeight;
+    if(!db.aiChat || !db.aiChat.length) {
+      var inp = document.getElementById('ai-input');
+      if(inp) inp.focus();
+    }
+  }, 150);
+}
+function closeAiPanel() {
+  var panel = document.getElementById('ai-panel');
+  if(panel) panel.classList.remove('open');
+  var inp = document.getElementById('ai-input');
+  if(inp) inp.blur();
+}
+
+// Builds a compact JSON snapshot of current app context for the system prompt.
+// Kept intentionally small (no full session/exercise dumps) to control token
+// cost — summarized counts and names, not raw data structures.
+function _buildAiContext() {
+  var ctx = { screen: G.screen };
+  if(G.sess) {
+    var doneSets = 0, totalSets = 0;
+    G.sess.exercises.forEach(function(e){
+      if(!e.sets) return;
+      totalSets += e.sets.filter(function(s){return !s.warmup;}).length;
+      doneSets += e.sets.filter(function(s){return s.done && !s.warmup;}).length;
+    });
+    ctx.activeSession = {
+      name: G.sess.name || '(unnamed)',
+      exerciseCount: G.sess.exercises.length,
+      exercises: G.sess.exercises.map(function(e){
+        var ex = db.exercises.find(function(x){return x.id===e.exerciseId;});
+        return ex ? ex.name : '?';
+      }),
+      setsLogged: doneSets,
+      setsTotal: totalSets,
+      elapsedSecs: G.elapsed
+    };
+  }
+  var recentSessions = (db.sessions||[]).slice(-5).reverse();
+  ctx.recentWorkouts = recentSessions.map(function(s){
+    return { name: s.name||'(unnamed)', date: s.date, exerciseCount: s.exercises.length };
+  });
+  ctx.exerciseLibraryCount = (db.exercises||[]).length;
+  ctx.presetCount = (db.presets||[]).length;
+  ctx.totalWorkoutsLogged = (db.sessions||[]).length;
+  return ctx;
+}
+
+function _buildAiSystemPrompt() {
+  var ctx = _buildAiContext();
+  return 'You are a fitness assistant built into WorkoutDB, a personal workout logging app. ' +
+    'The user is asking you questions from inside the app. Help with exercise selection, ' +
+    'muscle targeting, workout planning, form cues, and interpreting their logged data. ' +
+    'Be concise and conversational — this is a mobile chat interface, not a report. ' +
+    'Avoid markdown headers and heavy formatting; use plain text with occasional short lists. ' +
+    'You are not a doctor — for injury or medical concerns, suggest they consult a professional. ' +
+    '\n\nCurrent app context (JSON):\n' + JSON.stringify(ctx, null, 2);
+}
+
+function renderAiMessages() {
+  var el = document.getElementById('ai-messages');
+  if(!el) return;
+  var thread = db.aiChat || [];
+  if(!thread.length) {
+    el.innerHTML = '<div id="ai-empty">' +
+      '<div id="ai-empty-icon">✨</div>' +
+      '<div id="ai-empty-label">Ask me anything about your workouts</div>' +
+      '<div id="ai-empty-sub">Exercise suggestions, muscle targeting, reading your progress, planning your next session — I can see your current session and recent history.</div>' +
+      '</div>';
+    return;
+  }
+  el.innerHTML = thread.map(function(m, i){
+    var roleClass = m.role === 'user' ? 'user' : 'assistant';
+    return '<div class="ai-msg-row '+roleClass+'">' +
+      '<div class="ai-msg-bubble" id="ai-bubble-'+i+'" onclick="copyAiMessage('+i+')" title="Tap to copy">'+_escHtml(m.content)+'</div>' +
+    '</div>';
+  }).join('');
+}
+
+function _aiAutoGrow(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+function _aiInputKeydown(event) {
+  if(event.key === 'Enter' && !event.shiftKey) {
+    event.preventDefault();
+    sendAiMessage();
+  }
+}
+
+var _aiSending = false;
+function sendAiMessage() {
+  if(_aiSending) return;
+  var inp = document.getElementById('ai-input');
+  if(!inp) return;
+  var text = inp.value.trim();
+  if(!text) return;
+  var apiKey = dkGetApiKey();
+  if(!apiKey) {
+    toast('Add an API key in Settings first');
+    return;
+  }
+  if(!db.aiChat) db.aiChat = [];
+  db.aiChat.push({ role:'user', content:text, ts:Date.now() });
+  saveDB();
+  inp.value = '';
+  inp.style.height = 'auto';
+  renderAiMessages();
+  _aiScrollToBottom();
+  _aiShowTyping();
+  _aiSending = true;
+  var sendBtn = document.getElementById('ai-send-btn');
+  if(sendBtn) sendBtn.classList.add('disabled');
+
+  // Send recent thread history (last 20 messages) plus the fresh system context
+  var history = db.aiChat.slice(-20).map(function(m){
+    return { role: m.role, content: m.content };
+  });
+
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: dkGetModel(),
+      max_tokens: 800,
+      system: _buildAiSystemPrompt(),
+      messages: history
+    })
+  })
+  .then(function(r){
+    if(!r.ok) return r.json().then(function(errBody){ throw new Error((errBody.error&&errBody.error.message)||('HTTP '+r.status)); });
+    return r.json();
+  })
+  .then(function(data){
+    var text = (data.content||[]).filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
+    _aiHideTyping();
+    db.aiChat.push({ role:'assistant', content: text || '(empty response)', ts:Date.now() });
+    saveDB();
+    renderAiMessages();
+    _aiScrollToBottom();
+  })
+  .catch(function(err){
+    _aiHideTyping();
+    db.aiChat.push({ role:'assistant', content: '⚠ Error: '+(err.message||'request failed')+'. Check your API key and model in Settings.', ts:Date.now() });
+    saveDB();
+    renderAiMessages();
+    _aiScrollToBottom();
+  })
+  .finally(function(){
+    _aiSending = false;
+    if(sendBtn) sendBtn.classList.remove('disabled');
+  });
+}
+
+function _aiShowTyping() {
+  var el = document.getElementById('ai-messages');
+  if(!el) return;
+  var row = document.createElement('div');
+  row.className = 'ai-msg-row assistant';
+  row.id = 'ai-typing-row';
+  row.innerHTML = '<div class="ai-msg-bubble"><div class="ai-typing"><span></span><span></span><span></span></div></div>';
+  el.appendChild(row);
+  _aiScrollToBottom();
+}
+function _aiHideTyping() {
+  var row = document.getElementById('ai-typing-row');
+  if(row) row.remove();
+}
+function _aiScrollToBottom() {
+  var body = document.getElementById('ai-body');
+  if(body) setTimeout(function(){ body.scrollTop = body.scrollHeight; }, 50);
+}
+
+function copyAiMessage(idx) {
+  var thread = db.aiChat || [];
+  var m = thread[idx];
+  if(!m) return;
+  var bubble = document.getElementById('ai-bubble-'+idx);
+  var flashCopied = function(){
+    if(bubble) {
+      bubble.classList.add('ai-msg-copied');
+      setTimeout(function(){ bubble.classList.remove('ai-msg-copied'); }, 600);
+    }
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(m.content).then(function(){
+      toast('✓ Message copied');
+      flashCopied();
+    }).catch(function(){
+      _fallbackCopyText(m.content); // shows its own toast
+      flashCopied();
+    });
+  } else {
+    _fallbackCopyText(m.content);
+    flashCopied();
+  }
+}
+
+function copyAiThread() {
+  var thread = db.aiChat || [];
+  if(!thread.length) { toast('Nothing to copy yet'); return; }
+  var text = thread.map(function(m){
+    return (m.role==='user' ? 'You: ' : 'Assistant: ') + m.content;
+  }).join('\n\n');
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){
+      toast('✓ Conversation copied');
+    }).catch(function(){
+      _fallbackCopyText(text); // shows its own toast
+    });
+  } else {
+    _fallbackCopyText(text);
+  }
+}
+
+function clearAiThread() {
+  if(!db.aiChat || !db.aiChat.length) { toast('Conversation already empty'); return; }
+  if(!confirm('Clear this conversation? This cannot be undone.')) return;
+  db.aiChat = [];
+  saveDB();
+  renderAiMessages();
+  toast('Conversation cleared');
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -3934,6 +4438,7 @@ function npLog() {
     if(logBtn){ logBtn.style.background='rgba(61,220,132,0.22)'; logBtn.style.color='var(--green)'; }
   }
   updateProgressBar();
+  saveActiveSessionDraft(); // crash-recovery: persist immediately after every logged set
   setTimeout(function(){
     _revealNextSet(ei);
     G._logGuard = false;
@@ -4125,6 +4630,10 @@ document.addEventListener('visibilitychange', function() {
   if(document.hidden) {
     // Screen locking — record when we went away
     G._pauseAt=Date.now();
+    // CRASH RECOVERY: this is the last reliable moment before iOS may reclaim
+    // the backgrounded tab's memory and wipe the entire JS context. Save
+    // immediately (not debounced) so an extended absence can't lose progress.
+    saveActiveSessionDraftNow();
   } else {
     // Returning — if interval had fired fine, no correction needed.
     // Re-sync elapsed from real wall-clock time to correct any drift.
@@ -4145,6 +4654,13 @@ document.addEventListener('visibilitychange', function() {
       if(cel) cel.textContent=fmt(elapsed);
     }
   }
+});
+
+// CRASH RECOVERY (second layer): 'pagehide' can fire in standalone iOS PWA
+// mode (e.g. force-quit from the app switcher) without a preceding
+// 'visibilitychange'. Mirror the same immediate save here as a safety net.
+window.addEventListener('pagehide', function() {
+  if(G.sess) saveActiveSessionDraftNow();
 });
 
 /* === UTILS === */
@@ -4197,7 +4713,7 @@ function navTo(sid) {
   if (nb) nb.classList.add('active');
   document.getElementById('hdr-back').style.display = 'none';
   document.getElementById('fab').style.display = 'none';
-  var titles={'s-home':'WorkoutDB','s-log':G.sess?'Workout':'Plan Workout','s-exercises':'Exercises','s-history':'History','s-calendar':'Calendar','s-presets':'Presets'};
+  var titles={'s-home':'WorkoutDB','s-log':G.sess?'Workout':'Plan Workout','s-exercises':'Exercises','s-history':'History','s-calendar':'Calendar','s-presets':'Presets','s-settings':'Settings'};
   document.getElementById('hdr-title').textContent = titles[sid]||'WorkoutDB';
   G.screen = sid;
   if (sid==='s-home') renderHome();
@@ -4209,6 +4725,7 @@ function navTo(sid) {
   else if (sid==='s-history')  renderHistory();
   else if (sid==='s-calendar') renderCalendar();
   else if (sid==='s-presets')  { document.getElementById('fab').style.display='flex'; renderPresets(); }
+  else if (sid==='s-settings') { document.getElementById('hdr-back').style.display='flex'; renderSettings(); }
 }
 function _setLogState(state) {
   var el = document.getElementById('s-log');
@@ -5190,11 +5707,20 @@ function clearPlan() {
 // Legacy startNewSession → now just goes to planner
 function startNewSession() { navTo('s-log'); }
 
+var _draftTickCounter = 0;
 function tickSessionTimer() {
   if(!G.sessStart) return;
   G.elapsed=Math.floor((Date.now()-G.sessStart-G.sessPaused)/1000);
   var el=document.getElementById('sess-elapsed');
   if(el) el.textContent=fmt(G.elapsed);
+  // Crash-recovery: periodic draft save every ~10s (tick runs every 500ms).
+  // This is a low-cost safety net independent of explicit save-set hooks —
+  // covers any mutation path that doesn't call saveActiveSessionDraft directly.
+  _draftTickCounter++;
+  if(_draftTickCounter >= 20) {
+    _draftTickCounter = 0;
+    saveActiveSessionDraft();
+  }
 }
 
 /* === ACTIVE SESSION === */
@@ -5472,6 +5998,7 @@ function logStretchSet(ei, si, event) {
   if(doneSets.length === workingSets.length && workingSets.length < maxSets) {
     ex.sets.push({holdSecs:set.holdSecs, done:false});
   }
+  saveActiveSessionDraft();
   renderSession();
   setTimeout(updateProgressBar, 50);
 }
@@ -5481,6 +6008,7 @@ function unlogStretchSet(ei, si) {
   var ex = G.sess.exercises[ei];
   if(ex.sets[si]) { ex.sets[si].done = false; ex.sets[si].holdSecs = ex.sets[si].holdSecs||30; }
   delete G_stretchTimers[ei+'-'+si];
+  saveActiveSessionDraft();
   renderSession();
 }
 
@@ -6519,6 +7047,7 @@ function toggleSet(ei,si) {
   var set=G.sess.exercises[ei].sets[si];
   set.done=!set.done;
   if(set.done && !set.warmup) startRestTimer(db.settings.defaultRestSecs||90, ei);
+  saveActiveSessionDraft();
   renderSession();
 }
 
@@ -6574,6 +7103,7 @@ function handleLogSet(ei, si, event) {
     var logBtn=rowEl.querySelector('.btn-log-set');
     if(logBtn){ logBtn.style.background='rgba(61,220,132,0.22)'; logBtn.style.color='var(--green)'; }
   }
+  saveActiveSessionDraft(); // crash-recovery: persist immediately after every logged set
 
   // Smart focus advance + progressive set reveal
   // _revealNextSet runs after focus is settled (150ms) to avoid DOM rebuild interrupting focus
@@ -6894,8 +7424,10 @@ function endSession() {
   stopAllPhaseTimers(); // save any running phase timers before modal
   var cooldownSecs=G.cooldownStart?Math.floor((Date.now()-G.cooldownStart)/1000):0;
   stopCooldown();
-  // Show finish modal with optional notes
+  // Show finish modal — name field, stats, optional notes
   openModal('Finish Workout',
+    '<div class="fg"><label class="flabel">Workout Name</label>'+
+    '<input class="finput" id="finish-name" value="'+_escHtml(G.sess.name||'')+'" placeholder="e.g. Push Day, Leg Day…" maxlength="60"></div>'+
     '<div style="margin-bottom:16px;background:var(--bg3);border-radius:12px;padding:12px 16px">'+
       '<div style="display:flex;justify-content:space-between;margin-bottom:6px">'+
         '<span style="font-size:13px;color:var(--t2)">Session Time</span>'+
@@ -6916,9 +7448,15 @@ function endSession() {
     '<div style="height:8px"></div>'+
     '<button class="btn btn-ghost" style="width:100%;font-size:12px" onclick="saveCurrentAsPreset()">📋 Save as Preset Template</button>'
   );
+  setTimeout(function(){ var el=document.getElementById('finish-name'); if(el && !el.value) el.focus(); }, 200);
 }
 function confirmFinishSession() {
   if(!G.sess) return;
+  var nameEl=document.getElementById('finish-name');
+  if(nameEl) {
+    var newName = nameEl.value.trim();
+    if(newName) G.sess.name = newName; // else keep existing auto-generated name
+  }
   var notesEl=document.getElementById('finish-notes');
   if(notesEl) G.sess.notes=notesEl.value.trim();
   var finalDur=G.sessStart?Math.floor((Date.now()-G.sessStart-G.sessPaused)/1000):G.elapsed;
@@ -6949,6 +7487,7 @@ function confirmFinishSession() {
   G.sess=null; G.elapsed=0; G.sessStart=0; G.sessPaused=0;
   npClose(); // dismiss numpad when session ends
   G.numpad.userExpanded = false; // reset expand preference for next session
+  db.activeSessionDraft = null; // session is now properly saved — draft no longer needed
   saveDB(); closeModal();
   _setLogState('planning');
   renderPlanner();
@@ -7695,6 +8234,309 @@ function calClick(yr,mo,d){
   el.innerHTML='<div class="sec-hdr" style="padding:0;margin-bottom:8px">'+ds+'</div>'+sess.map(sessCardHTML).join('');
 }
 
+/* === SETTINGS === */
+function renderSettings() {
+  var el = document.getElementById('settings-view');
+  if(!el) return;
+  var apiKey = (db.settings && db.settings.anthropicApiKey) || '';
+  var maskedKey = apiKey ? '••••••••' + apiKey.slice(-4) : '';
+  var model = dkGetModel();
+  var restSecs = (db.settings && db.settings.defaultRestSecs) || 90;
+  var weightUnit = (db.settings && db.settings.weightUnit) || 'lbs';
+
+  el.innerHTML =
+    '<div style="height:8px"></div>' +
+
+    '<div class="sec-hdr">AI Assistant</div>' +
+    '<div class="card" style="padding:14px 16px">' +
+      '<div class="fg" style="margin-bottom:12px">' +
+        '<label class="flabel">Anthropic API Key</label>' +
+        '<input class="finput" id="set-api-key" type="password" placeholder="sk-ant-..." ' +
+          'value="'+_escHtml(apiKey)+'" autocomplete="off" spellcheck="false">' +
+        (apiKey ? '<div style="font-size:11px;color:var(--t3);margin-top:6px">Current: '+maskedKey+'</div>' : '') +
+        '<div style="font-size:11px;color:var(--t3);margin-top:6px">Stored only on this device. Sent directly to api.anthropic.com — never anywhere else. Get a key at console.anthropic.com.</div>' +
+      '</div>' +
+      '<div class="fg" style="margin-bottom:12px">' +
+        '<label class="flabel">Model</label>' +
+        '<input class="finput" id="set-ai-model" placeholder="e.g. claude-haiku-4-5" value="'+_escHtml(model)+'" autocomplete="off" spellcheck="false">' +
+        '<div style="display:flex;gap:8px;margin-top:8px;align-items:center">' +
+          '<button class="btn btn-ghost" style="flex:1;font-size:12px;padding:9px 0" onclick="fetchAvailableModels()" id="fetch-models-btn">⟳ Fetch Available Models</button>' +
+        '</div>' +
+        '<div id="model-fetch-results" style="margin-top:8px"></div>' +
+        '<div style="font-size:11px;color:var(--t3);margin-top:6px">'+
+          'Free text — set this to whatever current model string you want, or fetch the live list above (uses your saved API key — save the key first). '+
+          'Anthropic periodically retires older model snapshots; if AI features stop working, fetch again or check '+
+          '<span style="color:var(--teal)">platform.claude.com</span> for the current model ID. The app will never auto-change this for you.'+
+        '</div>' +
+      '</div>' +
+      '<button class="btn btn-primary" style="width:100%" onclick="saveAiSettings()">Save AI Settings</button>' +
+      (apiKey ? '<div style="height:8px"></div><button class="btn btn-ghost" style="width:100%;color:var(--red);border-color:rgba(232,93,76,0.3)" onclick="clearAiSettings()">Remove API Key</button>' : '') +
+    '</div>' +
+
+    '<div class="sec-hdr">Workout Defaults</div>' +
+    '<div class="card" style="padding:14px 16px">' +
+      '<div class="fg" style="margin-bottom:12px">' +
+        '<label class="flabel">Default Rest Time (seconds)</label>' +
+        '<input class="finput" id="set-rest-secs" type="number" inputmode="numeric" value="'+restSecs+'" min="0" step="5">' +
+      '</div>' +
+      '<div class="fg" style="margin-bottom:12px">' +
+        '<label class="flabel">Weight Unit</label>' +
+        '<div style="display:flex;gap:8px">' +
+          '<div class="mchip'+(weightUnit==='lbs'?' active':'')+'" style="flex:1;text-align:center'+(weightUnit==='lbs'?';border-color:var(--teal);color:var(--teal);background:rgba(0,217,217,0.1)':'')+'" onclick="setWeightUnit(\'lbs\')">lbs</div>' +
+          '<div class="mchip'+(weightUnit==='kg'?' active':'')+'" style="flex:1;text-align:center'+(weightUnit==='kg'?';border-color:var(--teal);color:var(--teal);background:rgba(0,217,217,0.1)':'')+'" onclick="setWeightUnit(\'kg\')">kg</div>' +
+        '</div>' +
+      '</div>' +
+      '<button class="btn btn-primary" style="width:100%" onclick="saveWorkoutDefaults()">Save Defaults</button>' +
+    '</div>' +
+
+    '<div class="sec-hdr">Data</div>' +
+    '<div class="card">' +
+      '<div class="card-row" onclick="generateSessionBrief()">' +
+        '<div class="card-icon" style="background:rgba(157,78,221,0.12)">📋</div>' +
+        '<div class="card-body"><div class="card-title">Session Brief</div><div class="card-sub">Copy a context summary to start a new Claude.ai session</div></div>' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>' +
+      '</div>' +
+      '<div class="card-row" onclick="openBackupModal()">' +
+        '<div class="card-icon" style="background:rgba(93,168,255,0.12)">💾</div>' +
+        '<div class="card-body"><div class="card-title">Backup &amp; Restore</div><div class="card-sub">Export or import your data</div></div>' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>' +
+      '</div>' +
+      '<div class="card-row" onclick="runRepair()">' +
+        '<div class="card-icon" style="background:rgba(61,220,132,0.12)">🔧</div>' +
+        '<div class="card-body"><div class="card-title">Refresh &amp; Repair</div><div class="card-sub">Re-run schema checks and patch missing data</div></div>' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="sec-hdr">App</div>' +
+    '<div class="card">' +
+      '<div class="card-row" style="cursor:default">' +
+        '<div class="card-body"><div class="card-title">Version</div><div class="card-sub">'+_escHtml(document.title)+' · Schema v'+(db.schemaVersion||0)+'</div></div>' +
+      '</div>' +
+      '<div class="card-row" onclick="if(confirm(\'Reset all data? This cannot be undone.\')){try{localStorage.clear();}catch(e){}location.reload();}">' +
+        '<div class="card-icon" style="background:rgba(232,93,76,0.12)">🗑</div>' +
+        '<div class="card-body"><div class="card-title" style="color:var(--red)">Reset All Data</div><div class="card-sub">Erase everything and start fresh</div></div>' +
+      '</div>' +
+    '</div>' +
+    '<div style="height:20px"></div>';
+}
+
+/* === SESSION BRIEF — comprehensive context document for new Claude.ai sessions ===
+   Distinct from dkSessionBrief() (which only summarizes open DevKit issues).
+   This pulls together everything a new session needs to pick up work without
+   re-explaining the app from scratch: version/schema, function inventory, data
+   shape, active issues, and current session state if a workout is in progress. */
+function generateSessionBrief() {
+  dkRegenerateCodeMap(); // ensure function inventory + keyIds are current, not stale
+
+  var lines = [];
+  var today = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  lines.push('# WorkoutDB Session Brief — ' + today);
+  lines.push('');
+  lines.push('Version: ' + APP_VERSION + ' | Schema: v' + (db.schemaVersion||0) +
+    ' | ' + DK_CODE_MAP.totalLines + ' lines | ' + DK_CODE_MAP.functions.length + ' functions');
+  lines.push('');
+
+  // ── Data summary ──────────────────────────────────────────────────────
+  lines.push('## Data Summary');
+  lines.push('- ' + (db.exercises||[]).length + ' exercises in library');
+  lines.push('- ' + (db.presets||[]).length + ' presets (' +
+    (db.presets||[]).filter(function(p){return p.builtin;}).length + ' built-in, ' +
+    (db.presets||[]).filter(function(p){return !p.builtin;}).length + ' custom)');
+  lines.push('- ' + (db.sessions||[]).length + ' workouts logged');
+  lines.push('- Settings: rest=' + ((db.settings&&db.settings.defaultRestSecs)||90) + 's, unit=' +
+    ((db.settings&&db.settings.weightUnit)||'lbs') + ', AI model=' + dkGetModel());
+  lines.push('');
+
+  // ── Active session (if any) ──────────────────────────────────────────
+  if(G.sess) {
+    var doneSets = 0, totalSets = 0;
+    G.sess.exercises.forEach(function(e){
+      if(!e.sets) return;
+      totalSets += e.sets.filter(function(s){return !s.warmup;}).length;
+      doneSets += e.sets.filter(function(s){return s.done && !s.warmup;}).length;
+    });
+    lines.push('## Active Session');
+    lines.push('"' + (G.sess.name||'(unnamed)') + '" — ' + G.sess.exercises.length +
+      ' exercises, ' + doneSets + '/' + totalSets + ' sets logged, ' + fmt(G.elapsed) + ' elapsed');
+    lines.push('');
+  }
+
+  // ── Open DevKit issues (priority 1 first) ────────────────────────────
+  var devLog = dkLoadLog().filter(function(e){ return (e.status||'open')==='open'; });
+  if(devLog.length) {
+    lines.push('## Open DevKit Issues (' + devLog.length + ')');
+    var catLabels = {bug:'Bug',ui:'UI',feat:'Feature',note:'Note'};
+    devLog.forEach(function(e){
+      lines.push('- [' + (catLabels[e.cat]||e.cat) + '] ' + e.msg + (e.ref?' ['+e.ref+']':''));
+    });
+    lines.push('');
+  }
+
+  // ── Interaction map summary (broken/partial items only) ──────────────
+  var dkmIssues = (typeof DKM_ROWS !== 'undefined' ? DKM_ROWS : []).filter(function(r){
+    return r.status === 'broken' || r.status === 'partial';
+  });
+  if(dkmIssues.length) {
+    var p1 = dkmIssues.filter(function(r){return r.priority===1;});
+    lines.push('## Interaction Map — Known Issues (' + dkmIssues.length +
+      ' total, ' + p1.length + ' priority-1)');
+    (p1.length ? p1 : dkmIssues).slice(0, 15).forEach(function(r){
+      lines.push('- [' + (r.status||'?') + ' P' + (r.priority||'?') + '] ' + r.form + ' — ' + r.object + ': ' + r.current);
+    });
+    if(dkmIssues.length > 15) lines.push('- … and ' + (dkmIssues.length-15) + ' more (see DevKit → Map)');
+    lines.push('');
+  }
+
+  // ── Function inventory (grouped roughly by name prefix, just names+lines) ──
+  lines.push('## Function Inventory (' + DK_CODE_MAP.functions.length + ' total)');
+  lines.push('Names and line numbers only — fetch full source for implementation detail.');
+  var fnChunk = DK_CODE_MAP.functions.map(function(fn){
+    return fn.fn + '(' + fn.params + ') L' + fn.line;
+  });
+  // Keep this readable — wrap into a fenced block rather than one giant line
+  lines.push('```');
+  for(var i=0; i<fnChunk.length; i+=4) {
+    lines.push(fnChunk.slice(i, i+4).join('  |  '));
+  }
+  lines.push('```');
+  lines.push('');
+
+  // ── Key DOM IDs ────────────────────────────────────────────────────────
+  lines.push('## Key DOM IDs (' + DK_CODE_MAP.keyIds.length + ')');
+  lines.push(DK_CODE_MAP.keyIds.join(', '));
+  lines.push('');
+
+  // ── Schema field registry ────────────────────────────────────────────
+  lines.push('## Schema (SCHEMA_FIELDS registry)');
+  lines.push('```json');
+  lines.push(JSON.stringify(SCHEMA_FIELDS, null, 2));
+  lines.push('```');
+  lines.push('');
+
+  lines.push('---');
+  lines.push('Paste this at the start of a new Claude.ai session, with the current index.html ' +
+    'attached, to continue development with full context.');
+
+  var brief = lines.join('\n');
+
+  function _doCopy() {
+    if(navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(brief).then(function(){
+        toast('✓ Session Brief copied (' + Math.round(brief.length/1024) + 'KB)');
+      }).catch(function(){ _fallbackCopyText(brief); });
+    } else {
+      _fallbackCopyText(brief);
+    }
+  }
+  if(navigator.share) {
+    navigator.share({ title:'WorkoutDB Session Brief', text:brief }).catch(function(){ _doCopy(); });
+  } else {
+    _doCopy();
+  }
+}
+
+function saveAiSettings() {
+  var keyEl = document.getElementById('set-api-key');
+  var modelEl = document.getElementById('set-ai-model');
+  var key = keyEl ? keyEl.value.trim() : '';
+  var model = modelEl ? modelEl.value.trim() : '';
+  if(key && !key.startsWith('sk-')) { toast('Key should start with sk-'); return; }
+  dkSetApiKey(key); // canonical write — also syncs db.settings.anthropicApiKey + legacy key
+  if(!db.settings) db.settings = {};
+  db.settings.aiModel = model || DK_DEFAULT_MODEL;
+  saveDB();
+  toast('✓ AI settings saved');
+  renderSettings();
+}
+
+function clearAiSettings() {
+  if(!confirm('Remove the saved API key from this device?')) return;
+  dkClearApiKey();
+  toast('API key removed');
+  renderSettings();
+}
+
+// Fetches the live model list from GET /v1/models using the currently saved
+// (or just-typed, unsaved) API key, and renders it as a tappable list that
+// fills the Model text field. The text field stays the source of truth — this
+// is a convenience for discovery, not a hard-coded dropdown, since Anthropic's
+// model lineup changes over time and the app should never assume what's current.
+function fetchAvailableModels() {
+  var keyEl = document.getElementById('set-api-key');
+  var key = (keyEl && keyEl.value.trim()) || dkGetApiKey();
+  var resultsEl = document.getElementById('model-fetch-results');
+  var btn = document.getElementById('fetch-models-btn');
+  if(!key) { toast('Enter and save an API key first'); return; }
+  if(!resultsEl) return;
+  resultsEl.innerHTML = '<div style="font-size:12px;color:var(--t2);padding:8px 0">Fetching models…</div>';
+  if(btn) { btn.textContent = '⟳ Fetching…'; btn.style.pointerEvents = 'none'; }
+
+  fetch('https://api.anthropic.com/v1/models', {
+    method: 'GET',
+    headers: {
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    }
+  })
+  .then(function(r){
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return r.json();
+  })
+  .then(function(data){
+    if(btn) { btn.textContent = '⟳ Fetch Available Models'; btn.style.pointerEvents = ''; }
+    var models = (data && data.data) || [];
+    if(!models.length) {
+      resultsEl.innerHTML = '<div style="font-size:12px;color:var(--t2);padding:8px 0">No models returned.</div>';
+      return;
+    }
+    // Most recently released first, when created_at is present
+    models.sort(function(a,b){
+      return (b.created_at||'').localeCompare(a.created_at||'');
+    });
+    resultsEl.innerHTML =
+      '<div style="font-size:11px;color:var(--t3);margin-bottom:6px">Tap a model to use it:</div>' +
+      '<div class="card" style="margin:0">' +
+      models.map(function(m){
+        return '<div class="card-row" style="padding:10px 12px" onclick="selectFetchedModel(\''+_escHtml(m.id).replace(/'/g,"\\'")+'\')">' +
+          '<div class="card-body">' +
+            '<div class="card-title" style="font-size:13px">'+_escHtml(m.display_name||m.id)+'</div>' +
+            '<div class="card-sub" style="font-family:monospace;font-size:11px">'+_escHtml(m.id)+'</div>' +
+          '</div>' +
+        '</div>';
+      }).join('') +
+      '</div>';
+  })
+  .catch(function(err){
+    if(btn) { btn.textContent = '⟳ Fetch Available Models'; btn.style.pointerEvents = ''; }
+    resultsEl.innerHTML = '<div style="font-size:12px;color:var(--red);padding:8px 0">Couldn\'t fetch models — check your API key is correct and saved. ('+_escHtml(err.message||'error')+')</div>';
+  });
+}
+function selectFetchedModel(modelId) {
+  var modelEl = document.getElementById('set-ai-model');
+  if(modelEl) modelEl.value = modelId;
+  var resultsEl = document.getElementById('model-fetch-results');
+  if(resultsEl) resultsEl.innerHTML = '<div style="font-size:11px;color:var(--teal);padding:4px 0">✓ Selected — tap Save AI Settings to apply</div>';
+}
+
+function setWeightUnit(unit) {
+  // Just updates the visual selection pre-save; actual persistence happens on Save Defaults
+  if(!db.settings) db.settings = {};
+  db.settings.weightUnit = unit;
+  renderSettings();
+}
+
+function saveWorkoutDefaults() {
+  var restEl = document.getElementById('set-rest-secs');
+  var secs = restEl ? parseInt(restEl.value, 10) : NaN;
+  if(!db.settings) db.settings = {};
+  if(!isNaN(secs) && secs >= 0) db.settings.defaultRestSecs = secs;
+  saveDB();
+  toast('✓ Defaults saved');
+  renderSettings();
+}
+
 /* === REORDER === */
 function moveEx(ei, dir) {
   if(!G.sess) return;
@@ -7904,17 +8746,27 @@ function renderPresets() {
     el.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-label">No presets yet</div><div class="empty-sub">Tap + to build a preset workout template, or save your current workout as a preset.</div></div>';
     return;
   }
-  var builtins = presets.filter(function(p){return p.builtin;});
-  var custom   = presets.filter(function(p){return !p.builtin;});
+  var builtins = presets.filter(function(p){return p.builtin;}).sort(function(a,b){return (a.order||0)-(b.order||0);});
+  var custom   = presets.filter(function(p){return !p.builtin;}).sort(function(a,b){return (a.order||0)-(b.order||0);});
   function renderGroup(list) {
-    return list.map(function(p){
+    return list.map(function(p, idx){
       var exNames=p.exercises.map(function(e){
         var ex=db.exercises.find(function(x){return x.id===e.exerciseId;});
         return ex?ex.name:'?';
       }).join(', ');
+      var isFirst = idx===0, isLast = idx===list.length-1;
+      var groupKey = p.builtin ? 'builtin' : 'custom';
       return '<div class="preset-card" onclick="viewPreset('+p.id+')">'+
         '<div class="preset-hdr">'+
-          '<div style="flex:1">'+
+          '<div style="display:flex;flex-direction:column;gap:1px;flex-shrink:0" onclick="event.stopPropagation()">'+
+            '<div class="btn-icon" title="Move up" onclick="movePresetInList('+p.id+',\''+groupKey+'\',-1)" style="width:22px;height:18px;opacity:'+(isFirst?'0.25':'1')+(isFirst?';pointer-events:none':'')+'">'+
+              '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>'+
+            '</div>'+
+            '<div class="btn-icon" title="Move down" onclick="movePresetInList('+p.id+',\''+groupKey+'\',1)" style="width:22px;height:18px;opacity:'+(isLast?'0.25':'1')+(isLast?';pointer-events:none':'')+'">'+
+              '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>'+
+            '</div>'+
+          '</div>'+
+          '<div style="flex:1;min-width:0">'+
             '<div class="preset-name">'+p.name+'</div>'+
             '<div class="preset-meta">'+p.muscles.join(', ')+'</div>'+
           '</div>'+
@@ -7929,6 +8781,22 @@ function renderPresets() {
   el.innerHTML='<div style="height:8px"></div>'+
     (builtins.length?'<div class="sec-hdr">Built-in Routines</div>'+renderGroup(builtins):'')+
     (custom.length?'<div class="sec-hdr">My Custom Presets</div>'+renderGroup(custom):'');
+}
+
+function movePresetInList(id, groupKey, dir) {
+  var group = db.presets.filter(function(p){ return (groupKey==='builtin') ? !!p.builtin : !p.builtin; })
+                         .sort(function(a,b){return (a.order||0)-(b.order||0);});
+  var idx = group.findIndex(function(p){ return p.id===id; });
+  if(idx<0) return;
+  var newIdx = idx + dir;
+  if(newIdx < 0 || newIdx >= group.length) return;
+  // Swap order values between the two presets
+  var a = group[idx], b = group[newIdx];
+  var tmp = a.order||0;
+  a.order = b.order||0;
+  b.order = tmp;
+  saveDB();
+  renderPresets();
 }
 
 function openAddPresetModal(preexistingName, preexistingExIds) {
@@ -7983,7 +8851,8 @@ function savePreset() {
   if(!exIds.length){toast('Select at least one exercise');return;}
   var muscles=[];
   exIds.forEach(function(id){var ex=db.exercises.find(function(e){return e.id===id;});if(ex)ex.muscles.forEach(function(m){if(muscles.indexOf(m)<0)muscles.push(m);});});
-  var preset={id:db.ids.preset++,name:name,muscles:muscles,exercises:exIds.map(function(id){return {exerciseId:id};})};
+  var maxCustomOrder = db.presets.filter(function(p){return !p.builtin;}).reduce(function(m,p){return Math.max(m,p.order||0);}, -1);
+  var preset={id:db.ids.preset++,name:name,muscles:muscles,exercises:exIds.map(function(id){return {exerciseId:id};}),order:maxCustomOrder+1};
   db.presets.push(preset);
   saveDB();closeModal();renderPresets();toast('✓ Preset saved!');
 }
@@ -7996,7 +8865,16 @@ function viewPreset(id) {
     var ex=db.exercises.find(function(x){return x.id===e.exerciseId;});
     var name=ex?ex.name:'Unknown Exercise';
     var muscles=ex?ex.muscles.join('/'):'';
-    return '<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border1)">'+
+    var isFirst = i===0, isLast = i===p.exercises.length-1;
+    return '<div style="display:flex;align-items:center;gap:6px;padding:8px 0;border-bottom:1px solid var(--border1)">'+
+      '<div style="display:flex;flex-direction:column;gap:2px">'+
+        '<div class="btn-icon" title="Move up" onclick="movePresetEx('+id+','+i+',-1)" style="width:24px;height:20px;opacity:'+(isFirst?'0.25':'1')+(isFirst?';pointer-events:none':'')+'">'+
+          '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>'+
+        '</div>'+
+        '<div class="btn-icon" title="Move down" onclick="movePresetEx('+id+','+i+',1)" style="width:24px;height:20px;opacity:'+(isLast?'0.25':'1')+(isLast?';pointer-events:none':'')+'">'+
+          '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>'+
+        '</div>'+
+      '</div>'+
       '<div style="flex:1">'+
         '<div style="font-size:13px;font-weight:700;color:var(--t1)">'+name+'</div>'+
         '<div style="font-size:11px;color:var(--t2)">'+muscles+'</div>'+
@@ -8010,11 +8888,16 @@ function viewPreset(id) {
     '</div>';
   }).join('');
   openModal(p.name,
-    '<div style="margin-bottom:12px;display:flex;gap:6px;flex-wrap:wrap">'+
-      p.muscles.map(function(m){return '<span class="pill pill-teal">'+m+'</span>';}).join('')+
-      (isBuiltin?'<span class="pill" style="background:rgba(255,215,0,0.1);color:var(--gold)">⭐ Built-in</span>':'')+
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">'+
+      '<div style="flex:1;display:flex;gap:6px;flex-wrap:wrap">'+
+        p.muscles.map(function(m){return '<span class="pill pill-teal">'+m+'</span>';}).join('')+
+        (isBuiltin?'<span class="pill" style="background:rgba(255,215,0,0.1);color:var(--gold)">⭐ Built-in</span>':'')+
+      '</div>'+
+      '<div class="btn-icon" title="Rename" onclick="renamePreset('+id+')" style="width:30px;height:30px;flex-shrink:0">'+
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>'+
+      '</div>'+
     '</div>'+
-    '<div style="font-size:11px;color:var(--t3);margin-bottom:8px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase">Exercises — tap ⇄ to swap</div>'+
+    '<div style="font-size:11px;color:var(--t3);margin-bottom:8px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase">Exercises — ▲▼ reorder, ⇄ swap</div>'+
     '<div style="margin-bottom:16px">'+exList+'</div>'+
     '<button class="btn btn-primary" style="width:100%;margin-bottom:8px" onclick="loadPreset('+id+')">'+
       '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>'+
@@ -8026,6 +8909,18 @@ function viewPreset(id) {
       (!isBuiltin?'<button class="btn btn-danger" style="flex:1;font-size:12px" onclick="deletePreset('+id+')">Delete</button>':'')+
     '</div>'
   );
+}
+
+function movePresetEx(presetId, exIdx, dir) {
+  var p = db.presets.find(function(x){return x.id===presetId;});
+  if(!p || !p.exercises) return;
+  var newIdx = exIdx + dir;
+  if(newIdx < 0 || newIdx >= p.exercises.length) return;
+  var tmp = p.exercises[exIdx];
+  p.exercises[exIdx] = p.exercises[newIdx];
+  p.exercises[newIdx] = tmp;
+  saveDB();
+  viewPreset(presetId);
 }
 
 function openPresetSwapPicker(presetId, exIdx) {
@@ -8155,12 +9050,14 @@ function confirmSavePresetAsNew(sourceId) {
   var nameEl = document.getElementById('new-preset-name');
   var name = nameEl ? nameEl.value.trim() : '';
   if(!name){toast('Enter a name');return;}
+  var maxCustomOrder = db.presets.filter(function(x){return !x.builtin;}).reduce(function(m,x){return Math.max(m,x.order||0);}, -1);
   var newPreset = {
     id: db.ids.preset++,
     builtin: false,
     name: name,
     muscles: p.muscles.slice(),
-    exercises: p.exercises.map(function(e){return {exerciseId:e.exerciseId};})
+    exercises: p.exercises.map(function(e){return {exerciseId:e.exerciseId};}),
+    order: maxCustomOrder+1
   };
   db.presets.push(newPreset);
   saveDB();
@@ -8236,8 +9133,36 @@ function saveCurrentAsPreset() {
 }
 
 function deletePreset(id) {
-  db.presets=db.presets.filter(function(p){return p.id!==id;});
+  var p = db.presets.find(function(x){return x.id===id;});
+  if(!p) return;
+  if(p.builtin) { toast('Built-in presets can\'t be deleted'); return; }
+  if(!confirm('Delete "'+p.name+'"? This cannot be undone.')) return;
+  db.presets=db.presets.filter(function(x){return x.id!==id;});
   saveDB();closeModal();renderPresets();toast('Preset deleted');
+}
+
+function renamePreset(id) {
+  var p = db.presets.find(function(x){ return x.id===id; });
+  if(!p) return;
+  openModal('Rename Preset',
+    '<div class="fg"><label class="flabel">Preset Name</label>'+
+    '<input class="finput" id="rename-preset-inp" value="'+_escHtml(p.name||'')+'" placeholder="e.g. Push Day, Leg Day…" maxlength="60"></div>'+
+    '<button class="btn btn-primary" onclick="confirmRenamePreset('+id+')">Save Name</button>'
+  );
+  setTimeout(function(){ var el=document.getElementById('rename-preset-inp'); if(el){el.focus();el.select();} }, 200);
+}
+function confirmRenamePreset(id) {
+  var p = db.presets.find(function(x){ return x.id===id; });
+  if(!p) return;
+  var el = document.getElementById('rename-preset-inp');
+  var name = el ? el.value.trim() : '';
+  if(!name) { toast('Enter a name'); return; }
+  p.name = name;
+  saveDB();
+  closeModal();
+  toast('✓ Renamed to "'+name+'"');
+  renderPresets();
+  viewPreset(id);
 }
 
 /* === BACKUP & RESTORE === */
@@ -8979,14 +9904,128 @@ function confirmImport(mode) {
   toast('✓ Import complete — '+(mode==='replace'?'data replaced':'data merged'));
 }
 
+/* === CRASH RECOVERY: resume prompt === */
+function _draftAgeLabel(savedAt) {
+  var mins = Math.floor((Date.now() - savedAt) / 60000);
+  if(mins < 1) return 'just now';
+  if(mins < 60) return mins+' minute'+(mins===1?'':'s')+' ago';
+  var hrs = Math.floor(mins/60);
+  if(hrs < 24) return hrs+' hour'+(hrs===1?'':'s')+' ago';
+  var days = Math.floor(hrs/24);
+  return days+' day'+(days===1?'':'s')+' ago';
+}
+function promptResumeSessionDraft() {
+  var draft = db.activeSessionDraft;
+  if(!draft || !draft.session) return;
+  var sess = draft.session;
+  var exCount = (sess.exercises||[]).length;
+  var setsLogged = (sess.exercises||[]).reduce(function(a,e){
+    return a + (e.sets ? e.sets.filter(function(s){return s.done;}).length : (e.cardioData&&e.cardioData.done?1:0));
+  }, 0);
+  openModal('Unsaved Workout Found',
+    '<div style="text-align:center;padding:6px 0 18px">'+
+      '<div style="font-size:40px;margin-bottom:10px">⚠️</div>'+
+      '<div style="font-size:16px;font-weight:700;color:var(--t1);margin-bottom:6px">'+
+        _escHtml(sess.name||'Workout')+
+      '</div>'+
+      '<div style="font-size:13px;color:var(--t2);line-height:1.5">'+
+        'The app closed before this workout was saved.<br>'+
+        exCount+' exercise'+(exCount===1?'':'s')+' · '+setsLogged+' set'+(setsLogged===1?'':'s')+' logged<br>'+
+        'Last activity '+_draftAgeLabel(draft.savedAt)+
+      '</div>'+
+    '</div>'+
+    '<button class="btn btn-primary" style="width:100%;margin-bottom:10px" onclick="resumeSessionDraft()">'+
+      '▶ Resume Workout'+
+    '</button>'+
+    '<button class="btn btn-ghost" style="width:100%" onclick="discardSessionDraft()">'+
+      'Discard'+
+    '</button>'
+  );
+}
+function resumeSessionDraft() {
+  var draft = db.activeSessionDraft;
+  if(!draft || !draft.session) { closeModal(); return; }
+  G.sess = draft.session;
+  // Restore elapsed-time anchors. We don't know how long the app was actually
+  // dead, so anchor sessStart such that elapsed-so-far is preserved, then
+  // resume ticking forward from now.
+  var elapsedAtSave = draft.sessStart ? Math.floor((draft.savedAt - draft.sessStart - (draft.sessPaused||0))/1000) : 0;
+  G.sessStart = Date.now() - (elapsedAtSave*1000);
+  G.sessPaused = 0;
+  G.phaseOpen = draft.phaseOpen || {warmup:true,workout:true,cooldown:true};
+  if(draft.phaseTimers) {
+    Object.keys(draft.phaseTimers).forEach(function(p){
+      if(!G_phaseTimers[p]) return;
+      var saved = draft.phaseTimers[p];
+      if(!saved) return;
+      clearInterval(G_phaseTimers[p].id);
+      if(saved.running) {
+        // Re-anchor the phase timer start so its elapsed time is preserved,
+        // then actually restart its ticking interval (same pattern as
+        // togglePhaseTimer) — otherwise the display freezes at the restored value.
+        G_phaseTimers[p] = {start: Date.now()-((saved.elapsed||0)*1000), running:true, elapsed:saved.elapsed||0, id:null};
+        (function(phase){
+          G_phaseTimers[phase].id = setInterval(function(){
+            G_phaseTimers[phase].elapsed = Math.floor((Date.now()-G_phaseTimers[phase].start)/1000);
+            _syncPhaseTimerUI(phase, G_phaseTimers[phase].elapsed, true, false);
+          }, 500);
+        })(p);
+      } else {
+        G_phaseTimers[p] = {start:0, running:false, elapsed:saved.elapsed||0, id:null};
+      }
+    });
+  }
+  clearInterval(G.timerID);
+  G.timerID = setInterval(tickSessionTimer, 500);
+  // Restore rest timer (between-set countdown) if it hadn't expired yet.
+  // G.restEnd is an absolute timestamp, so if it's already in the past the
+  // rest period simply completed while the app was closed — don't replay it.
+  if(draft.restEnd && draft.restEnd > Date.now() && draft.restAnchorEi >= 0) {
+    G.restTotal = draft.restTotal||0;
+    G.restAnchorEi = draft.restAnchorEi;
+    startRestTimer(Math.max(1, Math.round((draft.restEnd-Date.now())/1000)), draft.restAnchorEi);
+    G.restEnd = draft.restEnd; // preserve exact original end time (startRestTimer would recompute it slightly off)
+    G.restTotal = draft.restTotal||G.restTotal;
+  }
+  // Restore in-progress cardio timer the same way — only if still plausible
+  // (we don't auto-resume past a sane bound; just re-anchor start so elapsed
+  // continues correctly from where it was).
+  if(draft.cardioTimerEi >= 0 && draft.cardioTimerStart) {
+    G.cardioTimerEi = draft.cardioTimerEi;
+    G.cardioTimerStart = draft.cardioTimerStart; // absolute timestamp — elapsed continues naturally
+  }
+  closeModal();
+  navTo('s-log'); // internally calls _setLogState + renderSession since G.sess is now populated
+  toast('✓ Workout resumed');
+}
+function discardSessionDraft() {
+  clearActiveSessionDraft();
+  closeModal();
+  toast('Draft discarded');
+}
+
 /* === INIT === */
 renderHome();
+// Keep the static home-screen version label in sync with the single source of
+// truth (APP_VERSION) — prevents the staleness that previously crept in across
+// versions, where this label, <title>, and APP_VERSION each had to be bumped
+// separately by hand and could silently drift out of sync.
+(function _syncVersionLabel(){
+  var el = document.querySelector('.home-version');
+  if(el) el.textContent = 'V ' + APP_VERSION.replace(/^v/i, '');
+})();
 // Show startup notice if migrations ran
 if(_startupMigrationReport && _startupMigrationReport.length > 0) {
   setTimeout(function(){
     toast('Data refreshed: '+_startupMigrationReport.length+' item'+(
       _startupMigrationReport.length>1?'s':'')+' updated');
   }, 1200);
+}
+// Crash recovery: if a session draft survived an unexpected close, offer to resume it.
+// Delayed slightly so it doesn't collide with the migration toast above, and so the
+// modal-overlay DOM is fully ready.
+if(db.activeSessionDraft && db.activeSessionDraft.session && !G.sess) {
+  setTimeout(function(){ promptResumeSessionDraft(); }, 400);
 }
 </script>
 </body>
