@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="WorkoutDB">
-<title>WorkoutDB v2.9.6</title>
+<title>WorkoutDB v2.9.9</title>
 <style>
 :root {
   --bg0:#0E0F11;--bg1:#141517;--bg2:#1A1B1E;--bg3:#202124;--bg4:#27292D;
@@ -2910,7 +2910,7 @@ function dkExport() {
 
 /* === DATA === */
 const DB_KEY = 'workoutdb_v1';
-const APP_VERSION = 'v2.9.6';
+const APP_VERSION = 'v2.9.9';
 const SCHEMA_VERSION = 5; // increment each release that changes db structure
 const MUSCLES = ['Chest','Back','Shoulders','Biceps','Triceps','Forearms','Abs','Hips','Lower Back','Quads','Hamstrings','Glutes','Calves','Full Body','Stretching','Cardio'];
 
@@ -2988,6 +2988,45 @@ const DAYS_L = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Sat
 
 function eqLabel(id) { var e = EQUIP_LIST.find(function(x){return x.id===id;}); return e ? e.label : id; }
 function eqIcon(id)  { var e = EQUIP_LIST.find(function(x){return x.id===id;}); return e ? e.icon : ''; }
+
+// ── Quick demo launcher — one tap from session/plan/exercise cards ─────────
+function openExDemo(exId) {
+  var ex = db.exercises.find(function(e){ return e.id===exId; });
+  if(!ex) return;
+  var name = ex.name;
+  var refBtn = ex.url ?
+    '<a href="'+ex.url+'" target="_blank" class="btn btn-ghost" style="width:100%;margin-bottom:8px;text-decoration:none;box-sizing:border-box">🔗 Saved Reference</a>' : '';
+  openModal('Watch: '+name,
+    '<div style="display:flex;flex-direction:column;gap:8px">'+
+      refBtn+
+      '<a href="https://www.youtube.com/results?search_query='+encodeURIComponent(name+' exercise form')+'" target="_blank" class="btn btn-primary" style="width:100%;text-decoration:none;box-sizing:border-box">▶ YouTube Demo</a>'+
+      '<a href="https://www.google.com/search?q='+encodeURIComponent(name+' exercise how to')+'" target="_blank" class="btn btn-ghost" style="width:100%;text-decoration:none;box-sizing:border-box">🌐 Web Search</a>'+
+    '</div>'
+  );
+}
+
+// ── Resolve whether a plan/session entry is Hold-timer or Reps mode ────────
+function _resolveLogMode(entry, exDef) {
+  if(entry && entry.logMode) return entry.logMode;
+  if(exDef && exDef.defaultLogMode) return exDef.defaultLogMode;
+  return (exDef && exDef.type==='stretch') ? 'hold' : 'reps';
+}
+
+// ── One-line "Target: …" summary used in plan cards + session card meta ────
+function _planEntrySummary(entry, exDef) {
+  var isCardio = exDef && exDef.type==='cardio';
+  if(isCardio) return 'Cardio';
+  var isHold = _resolveLogMode(entry, exDef)==='hold';
+  if(isHold) {
+    var hSets = entry.sets || (exDef&&exDef.targetSets) || 3;
+    var hSecs = entry.targetHoldSecs || (exDef&&exDef.targetHoldSecs) || 30;
+    return hSets+'×'+fmt(hSecs);
+  }
+  var sets = entry.sets || (exDef&&exDef.targetSets) || 4;
+  var reps = entry.targetReps || (exDef&&exDef.targetReps) || '—';
+  var wt   = entry.startWeight || (exDef&&exDef.targetWeight) || '—';
+  return sets+'×'+reps+' @ '+wt+'lbs';
+}
 
 function loadDB() {
   try { var d = JSON.parse(localStorage.getItem(DB_KEY)); return d || freshDB(); }
@@ -3198,6 +3237,11 @@ function freshDB() {
       {id:173,name:'Standing Quad Stretch', muscles:['Stretching'],equipment:['bodyweight'],type:'stretch',positions:[],notes:'Stand on one foot, pull other heel toward glutes. Use wall for balance.'},
       {id:174,name:'Overhead Tricep Stretch',muscles:['Stretching'],equipment:['bodyweight'],type:'stretch',positions:[],notes:'Raise one arm, bend elbow behind head, pull with other hand. Also opens the lat.'},
       {id:175,name:'Cross-Body Shoulder Stretch',muscles:['Stretching'],equipment:['bodyweight'],type:'stretch',positions:[],notes:'Pull one arm across chest with other arm. Targets rear deltoid and upper back.'},
+      /* ── CORE STABILITY / DISC THERAPY (v2.9.7) ── */
+      {id:176,name:'Bird Dog',              muscles:['Abs','Lower Back'],equipment:['bodyweight'],type:'stretch',defaultLogMode:'reps',positions:[],notes:'On hands and knees, extend opposite arm and leg; pause 2-3s, return, switch. Keep hips level and spine neutral — no arching. Core stability without disc loading.'},
+      {id:177,name:'Dead Bug',              muscles:['Abs'],equipment:['bodyweight'],type:'stretch',defaultLogMode:'reps',positions:[],notes:'Lying on back, arms up, knees at 90°. Lower opposite arm and leg slowly while keeping lower back pressed to floor. Anti-extension core control — very disc-friendly.'},
+      {id:178,name:'Side Plank',            muscles:['Abs','Lower Back'],equipment:['bodyweight'],type:'stretch',positions:['Knees','Full'],notes:'On forearm, hips lifted, body in line. Start from knees if new. Builds lateral core (QL/obliques) with minimal spine compression. Hold each side.'},
+      {id:179,name:'McGill Curl-Up',        muscles:['Abs'],equipment:['bodyweight'],type:'stretch',positions:[],notes:'Lying on back, one knee bent, hands under lumbar arch. Lift head/shoulders slightly — don\'t flatten or flex the spine. Trains abs while preserving neutral lumbar posture.'},
       /* ── HIPS / LOWER BACK (strength exercises) ── */
       {id:176,name:'Dead Bug',              muscles:['Lower Back','Abs'],equipment:['bodyweight'],positions:[],notes:'Lying on back, extend opposite arm/leg. Excellent core stabilizer for L2/L3 health. Go slow and controlled.'},
       {id:177,name:'Bird Dog',              muscles:['Lower Back','Glutes'],equipment:['bodyweight'],positions:[],notes:'On hands/knees, extend opposite arm and leg. Key rehab exercise for lumbar stability.'},
@@ -3411,6 +3455,25 @@ function freshDB() {
           {exerciseId:160}, // Cobra Lift
           {exerciseId:170}, // Downward Dog
           {exerciseId:169}  // Standing Calf Stretch
+        ]
+      },
+      {id:99, builtin:true, name:'L2/L3 Disc Therapy', muscles:['Stretching','Lower Back','Abs'],
+        exercises:[
+          /* Phase 1 — Unload & mobilize */
+          {exerciseId:156}, // Cat-Cow (gentle spinal warm-up)
+          {exerciseId:157}, // Knee to Chest (single leg — lumbar decompression)
+          {exerciseId:158}, // Pelvic Tilt (activation primer)
+          /* Phase 2 — McGill Big-3 core stability */
+          {exerciseId:179}, // McGill Curl-Up
+          {exerciseId:178}, // Side Plank (both sides)
+          {exerciseId:176}, // Bird Dog
+          /* Phase 3 — Support chain strength */
+          {exerciseId:177}, // Dead Bug
+          {exerciseId:166}, // Glute Bridge
+          /* Phase 4 — Release contributors */
+          {exerciseId:161}, // Hip Flexor Stretch
+          {exerciseId:162}, // Piriformis Stretch
+          {exerciseId:155}  // Child's Pose (cooldown decompression)
         ]
       }
     ],
@@ -4925,10 +4988,9 @@ function _renderPlanPhase(phase) {
     var exDef = db.exercises.find(function(x){ return x.id===entry.exerciseId; });
     var name = exDef ? exDef.name : 'Unknown';
     var isCardio = exDef && exDef.type==='cardio';
+    var isHold = !isCardio && _resolveLogMode(entry, exDef)==='hold';
     var ssCls = entry.ssGroup ? ' ss-'+entry.ssGroup : '';
-    var summary = isCardio
-      ? 'Cardio'
-      : ((entry.sets||4)+'×'+(entry.targetReps||'—')+' @ '+(entry.startWeight||'—')+'lbs');
+    var summary = _planEntrySummary(entry, exDef);
 
     // SS connector above if previous entry has same SS group
     if(i>0 && entries[i-1].ssGroup && entries[i-1].ssGroup===entry.ssGroup) {
@@ -4948,6 +5010,9 @@ function _renderPlanPhase(phase) {
         '<div class="reorder-btn" ontouchstart="" onclick="planMoveEx('+gi+',-1)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></div>'+
         '<div class="reorder-btn" ontouchstart="" onclick="planMoveEx('+gi+',1)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>'+
         '<div class="reorder-btn" ontouchstart="" onclick="planMoveExEdge('+gi+',\'bottom\')" title="Move to bottom" style="opacity:0.55;font-size:9px;line-height:1">⤓</div>'+
+      '</div>'+
+      '<div class="btn-icon" style="width:28px;height:28px;flex-shrink:0;margin-left:2px;color:var(--teal)" onclick="event.stopPropagation();openExDemo('+entry.exerciseId+')" title="Watch Demo">'+
+        '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>'+
       '</div>'+
       '<div class="btn-icon" style="width:28px;height:28px;flex-shrink:0;margin-left:2px" onclick="event.stopPropagation();openPlanExConfig('+gi+')" title="Configure">'+
         '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>'+
@@ -4972,8 +5037,45 @@ function _renderPlanPhase(phase) {
         if(entry.logMode) html += '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);color:var(--gold)">'+(entry.logMode==='hold'?'Hold Timer':'Reps')+'</span>';
         html += '</div>';
       }
-      if(!isCardio) {
-        // Sets / Starting Weight / Target Reps grid
+      if(isHold) {
+        // Hold-timer exercises: Sets / Hold Time grid (no weight/reps/rest)
+        html += _lastVsSuggestedRow(gi, entry.exerciseId, true);
+        html += '<div class="plan-cfg-grid" style="grid-template-columns:1fr 1fr">'+
+          '<div class="plan-cfg-cell"><div class="plan-cfg-lbl">Sets</div>'+
+            '<input class="plan-cfg-inp" type="number" inputmode="numeric" min="1" max="20" placeholder="3" value="'+(entry.sets||'')+'"'+
+              ' onchange="G.plan.entries['+gi+'].sets=parseInt(this.value)||3;_refreshPlanSummary('+gi+')" id="pe-sets-'+gi+'">'+
+          '</div>'+
+          '<div class="plan-cfg-cell"><div class="plan-cfg-lbl">Hold (sec)</div>'+
+            '<input class="plan-cfg-inp" type="number" inputmode="numeric" placeholder="30" value="'+(entry.targetHoldSecs||'')+'"'+
+              ' onchange="G.plan.entries['+gi+'].targetHoldSecs=parseInt(this.value)||30;_refreshPlanSummary('+gi+')" id="pe-hold-'+gi+'">'+
+          '</div>'+
+        '</div>';
+        // SS assignment
+        html += '<div class="plan-ss-row">'+
+          '<div class="plan-ss-lbl">Superset</div>'+
+          '<div class="plan-ss-pills">'+
+          ['A','B','C','D'].map(function(g){
+            var on = entry.ssGroup===g;
+            return '<div class="plan-ss-pill'+(on?' on-'+g:'')+'" onclick="setPlanSS('+gi+',\''+g+'\')">'+g+'</div>';
+          }).join('')+
+          (entry.ssGroup?'<div class="plan-ss-pill" style="width:auto;padding:0 8px;font-size:10px;color:var(--red);border-color:rgba(232,93,76,0.3)" onclick="setPlanSS('+gi+',null)">Clear</div>':'')+
+          '</div>'+
+        '</div>';
+      } else if(isCardio) {
+        // Cardio: just duration target
+        html += '<div class="plan-cfg-grid" style="grid-template-columns:1fr 1fr">'+
+          '<div class="plan-cfg-cell"><div class="plan-cfg-lbl">Duration (min)</div>'+
+            '<input class="plan-cfg-inp" type="number" inputmode="decimal" placeholder="—" value="'+(entry.targetReps||'')+'"'+
+              ' onchange="G.plan.entries['+gi+'].targetReps=this.value" id="pe-reps-'+gi+'">'+
+          '</div>'+
+          '<div class="plan-cfg-cell"><div class="plan-cfg-lbl">Target Level</div>'+
+            '<input class="plan-cfg-inp" type="number" inputmode="decimal" placeholder="—" value="'+(entry.startWeight||'')+'"'+
+              ' onchange="G.plan.entries['+gi+'].startWeight=this.value" id="pe-wt-'+gi+'">'+
+          '</div>'+
+        '</div>';
+      } else {
+        // Reps mode: Sets / Starting Weight / Target Reps grid
+        html += _lastVsSuggestedRow(gi, entry.exerciseId, false);
         html += '<div class="plan-cfg-grid">'+
           '<div class="plan-cfg-cell"><div class="plan-cfg-lbl">Sets</div>'+
             '<input class="plan-cfg-inp" type="number" inputmode="numeric" min="1" max="20" placeholder="4" value="'+(entry.sets||'')+'"'+
@@ -5012,18 +5114,6 @@ function _renderPlanPhase(phase) {
           (entry.ssGroup?'<div class="plan-ss-pill" style="width:auto;padding:0 8px;font-size:10px;color:var(--red);border-color:rgba(232,93,76,0.3)" onclick="setPlanSS('+gi+',null)">Clear</div>':'')+
           '</div>'+
         '</div>';
-      } else {
-        // Cardio: just duration target
-        html += '<div class="plan-cfg-grid" style="grid-template-columns:1fr 1fr">'+
-          '<div class="plan-cfg-cell"><div class="plan-cfg-lbl">Duration (min)</div>'+
-            '<input class="plan-cfg-inp" type="number" inputmode="decimal" placeholder="—" value="'+(entry.targetReps||'')+'"'+
-              ' onchange="G.plan.entries['+gi+'].targetReps=this.value" id="pe-reps-'+gi+'">'+
-          '</div>'+
-          '<div class="plan-cfg-cell"><div class="plan-cfg-lbl">Target Level</div>'+
-            '<input class="plan-cfg-inp" type="number" inputmode="decimal" placeholder="—" value="'+(entry.startWeight||'')+'"'+
-              ' onchange="G.plan.entries['+gi+'].startWeight=this.value" id="pe-wt-'+gi+'">'+
-          '</div>'+
-        '</div>';
       }
       html += '</div>'; // plan-ex-body
     }
@@ -5042,11 +5132,45 @@ function _refreshPlanSummary(gi) {
   var entry = G.plan.entries[gi];
   if(!entry) return;
   var exDef = db.exercises.find(function(x){ return x.id===entry.exerciseId; });
-  var isCardio = exDef && exDef.type==='cardio';
-  var sum = isCardio ? 'Cardio'
-    : ((entry.sets||4)+'×'+(entry.targetReps||'—')+' @ '+(entry.startWeight||'—')+'lbs');
+  var sum = _planEntrySummary(entry, exDef);
   var el = document.querySelector('#plancard-'+gi+' .plan-ex-summary');
   if(el) el.textContent = sum;
+}
+
+// ── "Last" vs "Suggested (avg)" quick-apply chips for the plan editor ──────
+function _lastVsSuggestedRow(gi, exId, isHold) {
+  var last = getLastTarget(exId);
+  var sug = getSuggestedTarget(exId);
+  if(!last && !sug) return '';
+  var lastLabel = last ? (isHold ? last.sets+'×'+fmt(last.holdSecs) : last.sets+'×'+last.reps+(last.weight?' @ '+last.weight+'lbs':'')) : null;
+  var sugLabel  = sug  ? (isHold ? sug.sets+'×'+fmt(sug.holdSecs)  : sug.sets+'×'+sug.reps+(sug.weight?' @ '+sug.weight+'lbs':'')) : null;
+  if(lastLabel && sugLabel && lastLabel===sugLabel) sugLabel = null; // identical — nothing to toggle
+  if(!lastLabel && !sugLabel) return '';
+  var chips = '';
+  if(lastLabel) chips += '<div onclick="applyPlanSuggestion('+gi+',\'last\')" style="flex:1;text-align:center;padding:6px 8px;border-radius:8px;background:var(--bg3);border:1px solid var(--border1);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer">📋 Last: '+lastLabel+'</div>';
+  if(sugLabel) chips += '<div onclick="applyPlanSuggestion('+gi+',\'suggested\')" style="flex:1;text-align:center;padding:6px 8px;border-radius:8px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.25);font-size:11px;font-weight:600;color:var(--gold);cursor:pointer">✨ Avg: '+sugLabel+'</div>';
+  return '<div style="display:flex;gap:6px;margin-bottom:8px">'+chips+'</div>';
+}
+
+function applyPlanSuggestion(gi, source) {
+  _initPlan();
+  var entry = G.plan.entries[gi];
+  if(!entry) return;
+  var exDef = db.exercises.find(function(x){ return x.id===entry.exerciseId; });
+  var isHold = _resolveLogMode(entry, exDef)==='hold';
+  var val = source==='last' ? getLastTarget(entry.exerciseId) : getSuggestedTarget(entry.exerciseId);
+  if(!val) return;
+  if(isHold) {
+    entry.sets = val.sets;
+    entry.targetHoldSecs = val.holdSecs;
+  } else {
+    entry.sets = val.sets;
+    entry.targetReps = val.reps;
+    entry.startWeight = val.weight;
+    if(val.restSecs) entry.restSecs = val.restSecs;
+  }
+  _renderPlanPhase(entry.phase||'workout');
+  toast('✓ Applied '+(source==='last'?'last session':'suggested average'));
 }
 
 function togglePlanCard(gi) {
@@ -5440,15 +5564,19 @@ function planConfirmQueue() {
   _initPlan();
   var phase = G._planPickPhase||'workout';
   G._planPickQueue.forEach(function(id){
-    var prevW = getPrevWeight(id);
+    var exDef = db.exercises.find(function(e){ return e.id===id; });
+    var last = getLastTarget(id);
+    var sug = !last ? getSuggestedTarget(id) : null; // only needed if there's truly no "last" to use
+    var isHold = _resolveLogMode(null, exDef)==='hold';
     G.plan.entries.push({
       id: Date.now()+Math.random(),
       phase: phase,
       exerciseId: id,
-      sets: 4,
-      startWeight: prevW||'',
-      targetReps: '',
-      restSecs: db.settings.defaultRestSecs||90,
+      sets: (last&&last.sets) || (exDef&&exDef.targetSets) || (sug&&sug.sets) || (isHold?3:4),
+      startWeight: (last&&last.weight) || (exDef&&exDef.targetWeight) || (sug&&sug.weight) || '',
+      targetReps: (last&&last.reps) || (exDef&&exDef.targetReps) || (sug&&sug.reps) || '',
+      restSecs: (last&&last.restSecs) || (exDef&&exDef.targetRestSecs) || (sug&&sug.restSecs) || db.settings.defaultRestSecs||90,
+      targetHoldSecs: (last&&last.holdSecs) || (exDef&&exDef.targetHoldSecs) || (sug&&sug.holdSecs) || 30,
       ssGroup: null,
       expanded: true,
       equipOverride: null,    // null = use exercise default
@@ -5492,14 +5620,16 @@ function _applyPresetToPlan(presetId, mode) {
   var p = db.presets.find(function(x){return x.id===presetId;});
   if(!p) return;
   var newEntries = p.exercises.map(function(pe){
+    var exDef = db.exercises.find(function(x){ return x.id===pe.exerciseId; });
     return {
       id: Date.now()+Math.random(),
       phase: pe.phase||'workout',
       exerciseId: pe.exerciseId,
-      sets: pe.sets||4,
-      startWeight: getPrevWeight(pe.exerciseId)||'',
-      targetReps: pe.targetReps||'',
-      restSecs: pe.restSecs||db.settings.defaultRestSecs||90,
+      sets: pe.sets || (exDef&&exDef.targetSets) || 4,
+      startWeight: getPrevWeight(pe.exerciseId) || (exDef&&exDef.targetWeight) || '',
+      targetReps: pe.targetReps || (exDef&&exDef.targetReps) || '',
+      restSecs: pe.restSecs || (exDef&&exDef.targetRestSecs) || db.settings.defaultRestSecs||90,
+      targetHoldSecs: pe.targetHoldSecs || (exDef&&exDef.targetHoldSecs) || 30,
       ssGroup: pe.ssGroup||null,
       expanded: true
     };
@@ -5563,15 +5693,17 @@ function launchPlan() {
         minimized: false
       });
     } else if(isStretch){
-      // Stretch: start with 1 set, 30s hold; maxSets from plan
+      // Stretch: start with 1 set, hold time from target routine (falls back to 30s); maxSets from plan
       var maxSets = parseInt(entry.sets)||1;
       var stretchLogMode = entry.logMode || exDef.defaultLogMode || 'hold';
+      var seedHold = entry.targetHoldSecs || (exDef&&exDef.targetHoldSecs) || 30;
       sess.exercises.push({
         exerciseId: entry.exerciseId,
         phase: phase,
-        sets: [{holdSecs:30, done:false}],
+        sets: [{holdSecs:seedHold, done:false}],
         maxSets: maxSets,
         logMode: stretchLogMode,
+        targetHoldSecs: seedHold,
         equipOverride: exDef ? [exDef.equipment[0]||''] : [],
         minimized: false,
         notes: ''
@@ -5895,9 +6027,10 @@ function renderStretchCard(ex, ei, exDef) {
     '<div class="stretch-hdr">'+
       '<span style="font-size:18px">🧘</span>'+
       '<div style="flex:1"><div class="stretch-name" id="exname-'+ei+'">'+name+'</div>'+
-        '<div style="font-size:11px;color:var(--t2);margin-top:1px" id="exmeta-'+ei+'">'+doneSets+'/'+totalSets+' sets done</div>'+
+        '<div style="font-size:11px;color:var(--t2);margin-top:1px" id="exmeta-'+ei+'">'+doneSets+'/'+totalSets+' sets done'+((ex.maxSets||exDef&&exDef.targetHoldSecs)?' · Target: '+(ex.maxSets||3)+'×'+fmt(ex.targetHoldSecs||(exDef&&exDef.targetHoldSecs)||30):'')+'</div>'+
       '</div>'+
       '<div style="display:flex;gap:4px">'+
+        '<div class="btn-icon" style="color:var(--teal)" onclick="openExDemo('+ex.exerciseId+')" title="Watch Demo"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>'+
         '<div class="btn-icon" onclick="openExConfig('+ei+')" title="Settings"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>'+
         '<div class="btn-icon" onclick="addStretchSet('+ei+')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>'+
         '<div class="btn-icon" onclick="removeEx('+ei+')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>'+
@@ -6149,7 +6282,8 @@ function renderStrengthCard(ex,ei,exDef){
   var posStr=ex.positionOverride?' — '+ex.positionOverride:'';
   var metaStr=(selEquipId?eqLabel(selEquipId)+' '+eqIcon(selEquipId):'')+posStr+
     (ex.seatHeight?' · Seat: '+ex.seatHeight:'')+
-    (ex.cableHeight?' · Cable: '+ex.cableHeight:'');
+    (ex.cableHeight?' · Cable: '+ex.cableHeight:'')+
+    ((ex.maxSets && ex.sets && ex.sets[0])?' · Target: '+ex.maxSets+'×'+(ex.sets[0].targetReps||'—')+(ex.restSecs?' · '+ex.restSecs+'s rest':''):'');
   var hint=prevHint(ex.exerciseId,G.sess.id);
   var lastNoteHint = _getLastExNote(ex.exerciseId);
   // Determine log mode: hold or reps
@@ -6253,6 +6387,7 @@ function renderStrengthCard(ex,ei,exDef){
       '<div class="reorder-btn" onclick="moveEx('+ei+',-1)" title="Move up"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></div>'+
       '<div class="reorder-btn" onclick="moveEx('+ei+',1)" title="Move down"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>'+
     '</div>'+
+    '<div class="btn-icon" style="color:var(--teal)" onclick="openExDemo('+ex.exerciseId+')" title="Watch Demo"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>'+
     '<div class="btn-icon" onclick="openExConfig('+ei+')" title="Exercise settings">'+gearSVG+'</div>'+
     '<div class="btn-icon" onclick="addSet('+ei+')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>'+
     '<div class="btn-icon" onclick="removeEx('+ei+')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>'+
@@ -6773,6 +6908,73 @@ function getPrevWeight(exId) {
   if(!ex||!ex.sets) return '';
   var done=ex.sets.filter(function(s){return s.done&&s.weight&&!s.warmup;});
   return done.length ? done[done.length-1].weight : '';
+}
+
+// ── "Last" — the single most recent completed session's numbers ───────────
+function getLastTarget(exId) {
+  var exDef = db.exercises.find(function(e){return e.id===exId;});
+  var isHold = exDef && (exDef.defaultLogMode==='hold' || exDef.type==='stretch');
+  var prev = db.sessions.filter(function(s){
+    return s.exercises.some(function(e){return e.exerciseId===exId;});
+  }).sort(function(a,b){return new Date(b.date)-new Date(a.date);})[0];
+  if(!prev) return null;
+  var ex = prev.exercises.find(function(e){return e.exerciseId===exId;});
+  if(!ex||!ex.sets) return null;
+  if(isHold) {
+    var doneH = ex.sets.filter(function(s){return s.done;});
+    if(!doneH.length) return null;
+    return {sets:doneH.length, holdSecs:doneH[0].holdSecs||30, source:'last'};
+  }
+  var done = ex.sets.filter(function(s){return s.done&&s.weight&&s.reps&&!s.warmup;});
+  if(!done.length) return null;
+  var last = done[done.length-1];
+  return {sets:done.length, weight:last.weight, reps:last.reps, restSecs:ex.restSecs||null, source:'last'};
+}
+
+// ── "Suggested" — rolling average across your last few sessions ───────────
+// (smooths out an off day; only returned once there's enough history to average)
+function getSuggestedTarget(exId) {
+  var exDef = db.exercises.find(function(e){return e.id===exId;});
+  var isHold = exDef && (exDef.defaultLogMode==='hold' || exDef.type==='stretch');
+  var recent = db.sessions.filter(function(s){
+    return s.exercises.some(function(e){return e.exerciseId===exId;});
+  }).sort(function(a,b){return new Date(b.date)-new Date(a.date);}).slice(0,5);
+  if(recent.length < 2) return null; // not enough history to call it an "average"
+
+  if(isHold) {
+    var holdVals=[], setCounts=[];
+    recent.forEach(function(s){
+      var ex=s.exercises.find(function(e){return e.exerciseId===exId;});
+      if(!ex||!ex.sets) return;
+      var done=ex.sets.filter(function(x){return x.done;});
+      if(!done.length) return;
+      holdVals.push(done[0].holdSecs||30);
+      setCounts.push(done.length);
+    });
+    if(holdVals.length < 2) return null;
+    var avgHold = Math.round((holdVals.reduce(function(a,b){return a+b;},0)/holdVals.length)/5)*5;
+    var avgSets = Math.round(setCounts.reduce(function(a,b){return a+b;},0)/setCounts.length);
+    return {sets:avgSets||3, holdSecs:avgHold||30, source:'suggested', sampleSize:holdVals.length};
+  }
+
+  var weightVals=[], repVals=[], setCounts2=[], restVals=[];
+  recent.forEach(function(s){
+    var ex=s.exercises.find(function(e){return e.exerciseId===exId;});
+    if(!ex||!ex.sets) return;
+    var done=ex.sets.filter(function(x){return x.done&&x.weight&&x.reps&&!x.warmup;});
+    if(!done.length) return;
+    weightVals.push(parseFloat(done[done.length-1].weight)||0);
+    repVals.push(parseFloat(done[done.length-1].reps)||0);
+    setCounts2.push(done.length);
+    if(ex.restSecs) restVals.push(ex.restSecs);
+  });
+  if(weightVals.length < 2) return null;
+  var avg = function(arr){ return arr.reduce(function(a,b){return a+b;},0)/arr.length; };
+  var avgWeight = Math.round(avg(weightVals)/2.5)*2.5;
+  var avgReps = Math.round(avg(repVals));
+  var avgSets2 = Math.round(avg(setCounts2));
+  var avgRest = restVals.length ? Math.round(avg(restVals)/15)*15 : null;
+  return {sets:avgSets2||4, weight:avgWeight||0, reps:avgReps||0, restSecs:avgRest, source:'suggested', sampleSize:weightVals.length};
 }
 
 function addSet(ei) {
@@ -7389,8 +7591,25 @@ function confirmPickEx(id){
   var selPos=posEl?posEl.textContent:'';
   var prevW=getPrevWeight(id);
   // Progressive reveal: start with 1 set
-  var entry={exerciseId:id,phase:G._pickPhase||'workout',equipOverride:selEquip,positionOverride:selPos,
-    sets:[{weight:prevW,reps:'',done:false,warmup:false}],maxSets:4,minimized:false,notes:''};
+  var isStretchAdd = exDef && exDef.type==='stretch';
+  var isCardioAdd = exDef && exDef.type==='cardio';
+  var addLogMode = (exDef && exDef.defaultLogMode) || (isStretchAdd?'hold':'reps');
+  var entry;
+  if(isCardioAdd){
+    entry={exerciseId:id,phase:G._pickPhase||'workout',equipOverride:selEquip,
+      cardioData:{level:1,durationSecs:0,done:false,targetDuration:0},minimized:false};
+  } else if(addLogMode==='hold'){
+    var seedHold=(exDef&&exDef.targetHoldSecs)||30;
+    entry={exerciseId:id,phase:G._pickPhase||'workout',equipOverride:selEquip,positionOverride:selPos,
+      sets:[{holdSecs:seedHold,done:false}],maxSets:(exDef&&exDef.targetSets)||1,logMode:'hold',
+      targetHoldSecs:seedHold,minimized:false,notes:''};
+  } else {
+    entry={exerciseId:id,phase:G._pickPhase||'workout',equipOverride:selEquip,positionOverride:selPos,
+      sets:[{weight:prevW||(exDef&&exDef.targetWeight)||'',reps:(exDef&&exDef.targetReps)||'',
+        targetReps:(exDef&&exDef.targetReps)||'',done:false,warmup:false}],
+      maxSets:(exDef&&exDef.targetSets)||4,restSecs:(exDef&&exDef.targetRestSecs)||db.settings.defaultRestSecs||90,
+      minimized:false,notes:''};
+  }
   var phase=G._pickPhase||'workout';
   G.sess.exercises.push(entry);
   if(phase==='warmup') autoStartPhaseTimer('warmup');
@@ -7838,6 +8057,16 @@ function openAddExModal(exId) {
   var posOptions=['Flat','Incline','Decline','Standing','Seated','Lying','Bent Over','Single Arm','Alt','Wide Grip','Close Grip','Neutral','Reverse Grip','Rope','VBar','Kneeling','Hanging'];
   var pChips=posOptions.map(function(p){return '<div class="pos-chip'+(selP.indexOf(p)>=0?' sel':'')+'" onclick="this.classList.toggle(\'sel\')">'+p+'</div>';}).join('');
   var curLogMode = ex ? (ex.defaultLogMode||'reps') : (isStretch2 ? 'hold' : 'reps');
+  // If this exercise has no manually-saved target yet, auto-suggest one from recent history
+  var hasManualTarget = ex && (ex.targetSets||ex.targetReps||ex.targetWeight||ex.targetRestSecs||ex.targetHoldSecs);
+  var suggestion = (ex && !hasManualTarget) ? getSuggestedTarget(ex.id) : null;
+  var sugSets = suggestion ? suggestion.sets : '';
+  var sugWeight = suggestion ? suggestion.weight : '';
+  var sugReps = suggestion ? suggestion.reps : '';
+  var sugRest = suggestion ? suggestion.restSecs : '';
+  var sugHoldSecs = suggestion ? suggestion.holdSecs : '';
+  var suggestionBadge = suggestion ?
+    '<div style="font-size:11px;color:var(--gold);margin-top:5px">✨ Auto-filled from the average of your last '+suggestion.sampleSize+' sessions — edit any field before saving if you\'d like something different.</div>' : '';
   var btns=isEdit?
     '<div style="display:flex;gap:10px;margin-top:8px"><button class="btn btn-danger" style="flex:1" onclick="deleteEx('+ex.id+')">Delete</button><button class="btn btn-primary" style="flex:2" onclick="saveEx('+ex.id+')">Save Changes</button></div>':
     '<button class="btn btn-primary" onclick="saveEx(null)">Add Exercise</button>';
@@ -7848,10 +8077,24 @@ function openAddExModal(exId) {
     '<div class="fg" style="margin-top:16px"><label class="flabel">Position / Angle Options</label><div class="chip-grid" id="exf-pos">'+pChips+'</div></div>' +
     '<div class="fg" style="margin-top:16px"><label class="flabel">Default Logging Mode</label>'+
     '<div style="display:flex;gap:8px;margin-top:4px">'+
-      '<div id="exf-logmode-hold" class="pos-chip'+(curLogMode==='hold'?' sel':'')+'" onclick="document.getElementById(\'exf-logmode-hold\').classList.add(\'sel\');document.getElementById(\'exf-logmode-reps\').classList.remove(\'sel\')">⏱ Hold Time</div>'+
-      '<div id="exf-logmode-reps" class="pos-chip'+(curLogMode==='reps'?' sel':'')+'" onclick="document.getElementById(\'exf-logmode-reps\').classList.add(\'sel\');document.getElementById(\'exf-logmode-hold\').classList.remove(\'sel\')"># Reps</div>'+
+      '<div id="exf-logmode-hold" class="pos-chip'+(curLogMode==='hold'?' sel':'')+'" onclick="document.getElementById(\'exf-logmode-hold\').classList.add(\'sel\');document.getElementById(\'exf-logmode-reps\').classList.remove(\'sel\');document.getElementById(\'exf-target-hold\').style.display=\'grid\';document.getElementById(\'exf-target-reps\').style.display=\'none\'">⏱ Hold Time</div>'+
+      '<div id="exf-logmode-reps" class="pos-chip'+(curLogMode==='reps'?' sel':'')+'" onclick="document.getElementById(\'exf-logmode-reps\').classList.add(\'sel\');document.getElementById(\'exf-logmode-hold\').classList.remove(\'sel\');document.getElementById(\'exf-target-reps\').style.display=\'grid\';document.getElementById(\'exf-target-hold\').style.display=\'none\'"># Reps</div>'+
     '</div>'+
     '<div style="font-size:11px;color:var(--t3);margin-top:5px">Hold Time = countdown timer per set (stretches, planks). Reps = standard weight × reps logging.</div>'+
+    '</div>'+
+    '<div class="fg" style="margin-top:16px">'+
+      '<label class="flabel">Target Routine <span style="font-weight:400;color:var(--t3);font-size:10px">pre-fills this exercise the same way every time you add it</span></label>'+
+      suggestionBadge+
+      '<div id="exf-target-reps" style="display:'+(curLogMode==='reps'?'grid':'none')+';grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-top:6px">'+
+        '<div><div style="font-size:10px;color:var(--t3);margin-bottom:3px">Sets</div><input class="finput" style="padding:8px 6px;text-align:center;font-size:13px" type="number" inputmode="numeric" id="exf-tgt-sets" placeholder="4" value="'+(ex&&ex.targetSets?ex.targetSets:sugSets)+'"></div>'+
+        '<div><div style="font-size:10px;color:var(--t3);margin-bottom:3px">Wt (0=BW)</div><input class="finput" style="padding:8px 6px;text-align:center;font-size:13px" type="number" inputmode="decimal" id="exf-tgt-weight" placeholder="—" value="'+(ex&&ex.targetWeight!=null&&ex.targetWeight!==''?ex.targetWeight:sugWeight)+'"></div>'+
+        '<div><div style="font-size:10px;color:var(--t3);margin-bottom:3px">Reps</div><input class="finput" style="padding:8px 6px;text-align:center;font-size:13px" type="number" inputmode="numeric" id="exf-tgt-reps" placeholder="10" value="'+(ex&&ex.targetReps?ex.targetReps:sugReps)+'"></div>'+
+        '<div><div style="font-size:10px;color:var(--t3);margin-bottom:3px">Rest (s)</div><input class="finput" style="padding:8px 6px;text-align:center;font-size:13px" type="number" inputmode="numeric" id="exf-tgt-rest" placeholder="90" value="'+(ex&&ex.targetRestSecs?ex.targetRestSecs:sugRest)+'"></div>'+
+      '</div>'+
+      '<div id="exf-target-hold" style="display:'+(curLogMode==='hold'?'grid':'none')+';grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">'+
+        '<div><div style="font-size:10px;color:var(--t3);margin-bottom:3px">Sets</div><input class="finput" style="padding:8px 6px;text-align:center;font-size:13px" type="number" inputmode="numeric" id="exf-tgt-holdsets" placeholder="3" value="'+(ex&&ex.targetSets?ex.targetSets:sugSets)+'"></div>'+
+        '<div><div style="font-size:10px;color:var(--t3);margin-bottom:3px">Hold (sec)</div><input class="finput" style="padding:8px 6px;text-align:center;font-size:13px" type="number" inputmode="numeric" id="exf-tgt-holdsecs" placeholder="30" value="'+(ex&&ex.targetHoldSecs?ex.targetHoldSecs:sugHoldSecs)+'"></div>'+
+      '</div>'+
     '</div>'+
     '<div class="fg" style="margin-top:16px"><label class="flabel">Notes</label><textarea class="ftextarea" id="exf-notes" placeholder="Optional notes…">'+(ex&&ex.notes?ex.notes:'')+'</textarea></div>' +
     '<div class="fg" style="margin-top:16px">'+
@@ -7884,11 +8127,23 @@ function saveEx(id) {
   var isStretch = muscles.indexOf('Stretching')>=0;
   var isCardio = muscles.indexOf('Cardio')>=0;
   var exType = isStretch?'stretch':(isCardio?'cardio':undefined);
+  // Read target-routine fields (whichever panel is relevant for the chosen mode)
+  var tgtSetsEl     = document.getElementById(defaultLogMode==='hold' ? 'exf-tgt-holdsets' : 'exf-tgt-sets');
+  var tgtWeightEl   = document.getElementById('exf-tgt-weight');
+  var tgtRepsEl     = document.getElementById('exf-tgt-reps');
+  var tgtRestEl     = document.getElementById('exf-tgt-rest');
+  var tgtHoldSecsEl = document.getElementById('exf-tgt-holdsecs');
+  var targetSets     = tgtSetsEl && tgtSetsEl.value!=='' ? parseInt(tgtSetsEl.value)||null : null;
+  var targetWeight   = tgtWeightEl && tgtWeightEl.value!=='' ? tgtWeightEl.value.trim() : '';
+  var targetReps     = tgtRepsEl && tgtRepsEl.value!=='' ? tgtRepsEl.value.trim() : '';
+  var targetRestSecs = tgtRestEl && tgtRestEl.value!=='' ? parseInt(tgtRestEl.value)||null : null;
+  var targetHoldSecs = tgtHoldSecsEl && tgtHoldSecsEl.value!=='' ? parseInt(tgtHoldSecsEl.value)||null : null;
   if(id){
     var idx=db.exercises.findIndex(function(e){return e.id===id;});
     if(idx>-1){
       var existing=db.exercises[idx];
-      var rec={id:id,name:name,muscles:muscles,equipment:equipment,positions:positions,notes:notes,defaultLogMode:defaultLogMode,url:url};
+      var rec={id:id,name:name,muscles:muscles,equipment:equipment,positions:positions,notes:notes,defaultLogMode:defaultLogMode,url:url,
+        targetSets:targetSets,targetWeight:targetWeight,targetReps:targetReps,targetRestSecs:targetRestSecs,targetHoldSecs:targetHoldSecs};
       if(exType) rec.type=exType;
       else if(existing.type) rec.type=existing.type;
       // Preserve extended fields
@@ -7899,7 +8154,8 @@ function saveEx(id) {
       db.exercises[idx]=rec;
     }
   } else {
-    var newRec={id:db.ids.exercise++,name:name,muscles:muscles,equipment:equipment,positions:positions,notes:notes,defaultLogMode:defaultLogMode,url:url,source:'custom'};
+    var newRec={id:db.ids.exercise++,name:name,muscles:muscles,equipment:equipment,positions:positions,notes:notes,defaultLogMode:defaultLogMode,url:url,source:'custom',
+      targetSets:targetSets,targetWeight:targetWeight,targetReps:targetReps,targetRestSecs:targetRestSecs,targetHoldSecs:targetHoldSecs};
     if(exType) newRec.type=exType;
     db.exercises.push(newRec);
   }
@@ -7950,6 +8206,20 @@ function openExDetail(id) {
   var notesViewBtn = allNotes.length ?
     '<button class="btn btn-ghost" style="width:100%;margin-bottom:8px;font-size:12px" onclick="viewExerciseNotes('+id+')">📝 View All Notes ('+allNotes.length+')</button>' : '';
 
+  var isHoldMode = (ex.defaultLogMode||(isStretch?'hold':'reps'))==='hold';
+  var hasTarget = isHoldMode ? (ex.targetSets||ex.targetHoldSecs) : (ex.targetSets||ex.targetReps||ex.targetWeight||ex.targetRestSecs);
+  var targetSection = (!isCardio && hasTarget) ?
+    '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.2);border-radius:10px;margin-bottom:12px">'+
+      '<span style="font-size:16px">🎯</span>'+
+      '<div style="flex:1"><div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px">Target Routine</div>'+
+      '<div style="font-size:13px;color:var(--t1);font-weight:600">'+
+        (isHoldMode
+          ? (ex.targetSets||3)+' sets × '+fmt(ex.targetHoldSecs||30)+' hold'
+          : (ex.targetSets||4)+' sets × '+(ex.targetReps||'—')+' reps'+((ex.targetWeight&&ex.targetWeight!=='0')?' @ '+ex.targetWeight+' lbs':(ex.targetWeight==='0'?' (bodyweight)':''))+(ex.targetRestSecs?' · '+ex.targetRestSecs+'s rest':''))+
+      '</div></div>'+
+      '<div class="btn-icon" style="width:28px;height:28px" title="Edit target" onclick="openAddExModal('+id+')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>'+
+    '</div>' : '';
+
   var urlSection = ex.url ?
     '<div style="display:flex;gap:6px;margin-bottom:12px">'+
       '<a href="'+ex.url+'" target="_blank" style="flex:1;padding:9px 12px;border-radius:10px;background:rgba(0,217,217,0.08);border:1px solid rgba(0,217,217,0.25);color:var(--teal);font-size:12px;font-weight:600;text-decoration:none;text-align:center">🔗 Open Reference</a>'+
@@ -7968,6 +8238,7 @@ function openExDetail(id) {
     ex.equipment.map(function(e){return '<span class="pill pill-purple">'+eqIcon(e)+' '+eqLabel(e)+'</span>';}).join('')+
     (ex.positions&&ex.positions.length?ex.positions.map(function(p){return '<span style="background:rgba(255,215,0,0.1);color:var(--gold);padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700">'+p+'</span>';}).join(''):'')+'</div>'+
     (ex.notes?'<div style="color:var(--t2);font-size:13px;margin-bottom:12px;padding:10px;background:var(--bg3);border-radius:10px">'+ex.notes+'</div>':'')+
+    targetSection+
     urlSection+
     searchBtns+
     '<div class="flabel" style="margin-bottom:8px">Recent History</div>'+histHTML+
