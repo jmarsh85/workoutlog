@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="WorkoutDB">
-<title>WorkoutDB v2.9.9</title>
+<title>WorkoutDB v2.12.1</title>
 <style>
 :root {
   --bg0:#0E0F11;--bg1:#141517;--bg2:#1A1B1E;--bg3:#202124;--bg4:#27292D;
@@ -2910,9 +2910,11 @@ function dkExport() {
 
 /* === DATA === */
 const DB_KEY = 'workoutdb_v1';
-const APP_VERSION = 'v2.9.9';
-const SCHEMA_VERSION = 5; // increment each release that changes db structure
+const APP_VERSION = 'v2.12.1';
+const SCHEMA_VERSION = 6; // increment each release that changes db structure
 const MUSCLES = ['Chest','Back','Shoulders','Biceps','Triceps','Forearms','Abs','Hips','Lower Back','Quads','Hamstrings','Glutes','Calves','Full Body','Stretching','Cardio'];
+const MEDIA_MATCH_SEED_V1 = {"311":{"mediaRef":"Back_Flyes_-_With_Bands","mediaImages":["Back_Flyes_-_With_Bands/0.jpg","Back_Flyes_-_With_Bands/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.12},"177":{"mediaRef":"3_4_Sit-Up","mediaImages":["3_4_Sit-Up/0.jpg","3_4_Sit-Up/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.12},"137":{"mediaRef":"3_4_Sit-Up","mediaImages":["3_4_Sit-Up/0.jpg","3_4_Sit-Up/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.12},"170":{"mediaRef":"Downward_Facing_Balance","mediaImages":["Downward_Facing_Balance/0.jpg","Downward_Facing_Balance/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.25},"336":{"mediaRef":"3_4_Sit-Up","mediaImages":["3_4_Sit-Up/0.jpg","3_4_Sit-Up/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.12},"309":{"mediaRef":"3_4_Sit-Up","mediaImages":["3_4_Sit-Up/0.jpg","3_4_Sit-Up/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.12},"153":{"mediaRef":"All_Fours_Quad_Stretch","mediaImages":["All_Fours_Quad_Stretch/0.jpg","All_Fours_Quad_Stretch/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.287},"258":{"mediaRef":"Ab_Crunch_Machine","mediaImages":["Ab_Crunch_Machine/0.jpg","Ab_Crunch_Machine/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.12},"128":{"mediaRef":"Ab_Crunch_Machine","mediaImages":["Ab_Crunch_Machine/0.jpg","Ab_Crunch_Machine/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.12},"200":{"mediaRef":"3_4_Sit-Up","mediaImages":["3_4_Sit-Up/0.jpg","3_4_Sit-Up/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.12},"202":{"mediaRef":"Lying_Face_Down_Plate_Neck_Resistance","mediaImages":["Lying_Face_Down_Plate_Neck_Resistance/0.jpg","Lying_Face_Down_Plate_Neck_Resistance/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.125},"330":{"mediaRef":"Barbell_Ab_Rollout","mediaImages":["Barbell_Ab_Rollout/0.jpg","Barbell_Ab_Rollout/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.5},"133":{"mediaRef":"Recumbent_Bike","mediaImages":["Recumbent_Bike/0.jpg","Recumbent_Bike/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"41":{"mediaRef":"Lower_Back_Curl","mediaImages":["Lower_Back_Curl/0.jpg","Lower_Back_Curl/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.37},"288":{"mediaRef":"Barbell_Squat","mediaImages":["Barbell_Squat/0.jpg","Barbell_Squat/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"327":{"mediaRef":"Decline_Crunch","mediaImages":["Decline_Crunch/0.jpg","Decline_Crunch/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"276":{"mediaRef":"Cable_Crossover","mediaImages":["Cable_Crossover/0.jpg","Cable_Crossover/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"156":{"mediaRef":"Cat_Stretch","mediaImages":["Cat_Stretch/0.jpg","Cat_Stretch/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.333},"57":{"mediaRef":"Dip_Machine","mediaImages":["Dip_Machine/0.jpg","Dip_Machine/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"274":{"mediaRef":"Dumbbell_Incline_Row","mediaImages":["Dumbbell_Incline_Row/0.jpg","Dumbbell_Incline_Row/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.32},"152":{"mediaRef":"Chin-Up","mediaImages":["Chin-Up/0.jpg","Chin-Up/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"160":{"mediaRef":"Butt_Lift_Bridge","mediaImages":["Butt_Lift_Bridge/0.jpg","Butt_Lift_Bridge/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"206":{"mediaRef":"Cross-Body_Crunch","mediaImages":["Cross-Body_Crunch/0.jpg","Cross-Body_Crunch/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.4},"308":{"mediaRef":"Scissor_Kick","mediaImages":["Scissor_Kick/0.jpg","Scissor_Kick/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"154":{"mediaRef":"Isometric_Chest_Squeezes","mediaImages":["Isometric_Chest_Squeezes/0.jpg","Isometric_Chest_Squeezes/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.32},"342":{"mediaRef":"Farmers_Walk","mediaImages":["Farmers_Walk/0.jpg","Farmers_Walk/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.333},"203":{"mediaRef":"Glute_Ham_Raise","mediaImages":["Glute_Ham_Raise/0.jpg","Glute_Ham_Raise/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.37},"35":{"mediaRef":"Hammer_Curls","mediaImages":["Hammer_Curls/0.jpg","Hammer_Curls/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"171":{"mediaRef":"Flutter_Kicks","mediaImages":["Flutter_Kicks/0.jpg","Flutter_Kicks/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.37},"335":{"mediaRef":"Body-Up","mediaImages":["Body-Up/0.jpg","Body-Up/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.37},"345":{"mediaRef":"Barbell_Curl","mediaImages":["Barbell_Curl/0.jpg","Barbell_Curl/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"134":{"mediaRef":"Bench_Jump","mediaImages":["Bench_Jump/0.jpg","Bench_Jump/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"305":{"mediaRef":"Vertical_Swing","mediaImages":["Vertical_Swing/0.jpg","Vertical_Swing/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"77":{"mediaRef":"Board_Press","mediaImages":["Board_Press/0.jpg","Board_Press/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"322":{"mediaRef":"Monster_Walk","mediaImages":["Monster_Walk/0.jpg","Monster_Walk/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.37},"92":{"mediaRef":"Plate_Twist","mediaImages":["Plate_Twist/0.jpg","Plate_Twist/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.333},"338":{"mediaRef":"Mountain_Climbers","mediaImages":["Mountain_Climbers/0.jpg","Mountain_Climbers/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.483},"151":{"mediaRef":"External_Rotation","mediaImages":["External_Rotation/0.jpg","External_Rotation/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.333},"150":{"mediaRef":"Side_Neck_Stretch","mediaImages":["Side_Neck_Stretch/0.jpg","Side_Neck_Stretch/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.5},"301":{"mediaRef":"Seated_Band_Hamstring_Curl","mediaImages":["Seated_Band_Hamstring_Curl/0.jpg","Seated_Band_Hamstring_Curl/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.4},"402":{"mediaRef":"Lying_Dumbbell_Tricep_Extension","mediaImages":["Lying_Dumbbell_Tricep_Extension/0.jpg","Lying_Dumbbell_Tricep_Extension/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.52},"163":{"mediaRef":"Childs_Pose","mediaImages":["Childs_Pose/0.jpg","Childs_Pose/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.333},"162":{"mediaRef":"Cat_Stretch","mediaImages":["Cat_Stretch/0.jpg","Cat_Stretch/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.333},"132":{"mediaRef":"Dip_Machine","mediaImages":["Dip_Machine/0.jpg","Dip_Machine/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"168":{"mediaRef":"Seated_Biceps","mediaImages":["Seated_Biceps/0.jpg","Seated_Biceps/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.37},"400":{"mediaRef":"Cable_Shoulder_Press","mediaImages":["Cable_Shoulder_Press/0.jpg","Cable_Shoulder_Press/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.37},"205":{"mediaRef":"Side_Bridge","mediaImages":["Side_Bridge/0.jpg","Side_Bridge/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.333},"130":{"mediaRef":"Bicycling_Stationary","mediaImages":["Bicycling_Stationary/0.jpg","Bicycling_Stationary/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"302":{"mediaRef":"Stiff-Legged_Barbell_Deadlift","mediaImages":["Stiff-Legged_Barbell_Deadlift/0.jpg","Stiff-Legged_Barbell_Deadlift/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.52},"207":{"mediaRef":"Wrist_Rotations_with_Straight_Bar","mediaImages":["Wrist_Rotations_with_Straight_Bar/0.jpg","Wrist_Rotations_with_Straight_Bar/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.333},"115":{"mediaRef":"Single-Leg_Leg_Extension","mediaImages":["Single-Leg_Leg_Extension/0.jpg","Single-Leg_Leg_Extension/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.5},"201":{"mediaRef":"3_4_Sit-Up","mediaImages":["3_4_Sit-Up/0.jpg","3_4_Sit-Up/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.37},"346":{"mediaRef":"Rickshaw_Carry","mediaImages":["Rickshaw_Carry/0.jpg","Rickshaw_Carry/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.333},"310":{"mediaRef":"Barbell_Squat","mediaImages":["Barbell_Squat/0.jpg","Barbell_Squat/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"159":{"mediaRef":"Russian_Twist","mediaImages":["Russian_Twist/0.jpg","Russian_Twist/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"401":{"mediaRef":"Triceps_Pushdown","mediaImages":["Triceps_Pushdown/0.jpg","Triceps_Pushdown/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.453},"93":{"mediaRef":"Ab_Roller","mediaImages":["Ab_Roller/0.jpg","Ab_Roller/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"76":{"mediaRef":"Kettlebell_Arnold_Press","mediaImages":["Kettlebell_Arnold_Press/0.jpg","Kettlebell_Arnold_Press/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.817},"270":{"mediaRef":"Band_Pull_Apart","mediaImages":["Band_Pull_Apart/0.jpg","Band_Pull_Apart/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"318":{"mediaRef":"Box_Jump_Multiple_Response","mediaImages":["Box_Jump_Multiple_Response/0.jpg","Box_Jump_Multiple_Response/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"296":{"mediaRef":"Box_Squat","mediaImages":["Box_Squat/0.jpg","Box_Squat/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"291":{"mediaRef":"Split_Squat_with_Dumbbells","mediaImages":["Split_Squat_with_Dumbbells/0.jpg","Split_Squat_with_Dumbbells/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.62},"58":{"mediaRef":"Cable_Chest_Press","mediaImages":["Cable_Chest_Press/0.jpg","Cable_Chest_Press/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.62},"255":{"mediaRef":"Cable_Crossover","mediaImages":["Cable_Crossover/0.jpg","Cable_Crossover/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"324":{"mediaRef":"Pull_Through","mediaImages":["Pull_Through/0.jpg","Pull_Through/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.937},"114":{"mediaRef":"Calf_Raise_On_A_Dumbbell","mediaImages":["Calf_Raise_On_A_Dumbbell/0.jpg","Calf_Raise_On_A_Dumbbell/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.937},"55":{"mediaRef":"High_Cable_Curls","mediaImages":["High_Cable_Curls/0.jpg","High_Cable_Curls/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.62},"54":{"mediaRef":"Cable_Chest_Press","mediaImages":["Cable_Chest_Press/0.jpg","Cable_Chest_Press/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.937},"155":{"mediaRef":"Childs_Pose","mediaImages":["Childs_Pose/0.jpg","Childs_Pose/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"175":{"mediaRef":"Shoulder_Stretch","mediaImages":["Shoulder_Stretch/0.jpg","Shoulder_Stretch/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.65},"88":{"mediaRef":"Decline_Crunch","mediaImages":["Decline_Crunch/0.jpg","Decline_Crunch/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"408":{"mediaRef":"Barbell_Curl","mediaImages":["Barbell_Curl/0.jpg","Barbell_Curl/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"176":{"mediaRef":"Dead_Bug","mediaImages":["Dead_Bug/0.jpg","Dead_Bug/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"271":{"mediaRef":"Barbell_Deadlift","mediaImages":["Barbell_Deadlift/0.jpg","Barbell_Deadlift/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"315":{"mediaRef":"Donkey_Calf_Raises","mediaImages":["Donkey_Calf_Raises/0.jpg","Donkey_Calf_Raises/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.65},"131":{"mediaRef":"Elliptical_Trainer","mediaImages":["Elliptical_Trainer/0.jpg","Elliptical_Trainer/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"267":{"mediaRef":"Face_Pull","mediaImages":["Face_Pull/0.jpg","Face_Pull/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"73":{"mediaRef":"Front_Raise_And_Pullover","mediaImages":["Front_Raise_And_Pullover/0.jpg","Front_Raise_And_Pullover/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.937},"289":{"mediaRef":"Front_Squat_Clean_Grip","mediaImages":["Front_Squat_Clean_Grip/0.jpg","Front_Squat_Clean_Grip/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"166":{"mediaRef":"Barbell_Glute_Bridge","mediaImages":["Barbell_Glute_Bridge/0.jpg","Barbell_Glute_Bridge/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.817},"304":{"mediaRef":"Glute_Ham_Raise","mediaImages":["Glute_Ham_Raise/0.jpg","Glute_Ham_Raise/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"290":{"mediaRef":"Goblet_Squat","mediaImages":["Goblet_Squat/0.jpg","Goblet_Squat/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"277":{"mediaRef":"Good_Morning","mediaImages":["Good_Morning/0.jpg","Good_Morning/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"292":{"mediaRef":"Hack_Squat","mediaImages":["Hack_Squat/0.jpg","Hack_Squat/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"31":{"mediaRef":"Alternate_Hammer_Curl","mediaImages":["Alternate_Hammer_Curl/0.jpg","Alternate_Hammer_Curl/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.937},"112":{"mediaRef":"Cable_Hip_Adduction","mediaImages":["Cable_Hip_Adduction/0.jpg","Cable_Hip_Adduction/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.62},"113":{"mediaRef":"Cable_Hip_Adduction","mediaImages":["Cable_Hip_Adduction/0.jpg","Cable_Hip_Adduction/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.817},"161":{"mediaRef":"Intermediate_Hip_Flexor_and_Quad_Stretch","mediaImages":["Intermediate_Hip_Flexor_and_Quad_Stretch/0.jpg","Intermediate_Hip_Flexor_and_Quad_Stretch/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.6},"179":{"mediaRef":"Barbell_Hip_Thrust","mediaImages":["Barbell_Hip_Thrust/0.jpg","Barbell_Hip_Thrust/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.937},"343":{"mediaRef":"Reverse_Hyperextension","mediaImages":["Reverse_Hyperextension/0.jpg","Reverse_Hyperextension/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"275":{"mediaRef":"Inverted_Row","mediaImages":["Inverted_Row/0.jpg","Inverted_Row/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"285":{"mediaRef":"JM_Press","mediaImages":["JM_Press/0.jpg","JM_Press/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"406":{"mediaRef":"Glute_Kickback","mediaImages":["Glute_Kickback/0.jpg","Glute_Kickback/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.65},"157":{"mediaRef":"One_Knee_To_Chest","mediaImages":["One_Knee_To_Chest/0.jpg","One_Knee_To_Chest/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.817},"1":{"mediaRef":"V-Bar_Pulldown","mediaImages":["V-Bar_Pulldown/0.jpg","V-Bar_Pulldown/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"37":{"mediaRef":"One_Arm_Lat_Pulldown","mediaImages":["One_Arm_Lat_Pulldown/0.jpg","One_Arm_Lat_Pulldown/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"72":{"mediaRef":"Lateral_Raise_-_With_Bands","mediaImages":["Lateral_Raise_-_With_Bands/0.jpg","Lateral_Raise_-_With_Bands/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.937},"111":{"mediaRef":"Single-Leg_Leg_Extension","mediaImages":["Single-Leg_Leg_Extension/0.jpg","Single-Leg_Leg_Extension/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.937},"110":{"mediaRef":"Leg_Press","mediaImages":["Leg_Press/0.jpg","Leg_Press/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"317":{"mediaRef":"Leg_Press","mediaImages":["Leg_Press/0.jpg","Leg_Press/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"90":{"mediaRef":"Hanging_Leg_Raise","mediaImages":["Hanging_Leg_Raise/0.jpg","Hanging_Leg_Raise/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.937},"109":{"mediaRef":"Barbell_Lunge","mediaImages":["Barbell_Lunge/0.jpg","Barbell_Lunge/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.65},"299":{"mediaRef":"Lying_Leg_Curls","mediaImages":["Lying_Leg_Curls/0.jpg","Lying_Leg_Curls/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"174":{"mediaRef":"Overhead_Stretch","mediaImages":["Overhead_Stretch/0.jpg","Overhead_Stretch/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.667},"337":{"mediaRef":"Pallof_Press","mediaImages":["Pallof_Press/0.jpg","Pallof_Press/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"158":{"mediaRef":"Standing_Pelvic_Tilt","mediaImages":["Standing_Pelvic_Tilt/0.jpg","Standing_Pelvic_Tilt/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.817},"91":{"mediaRef":"Plank","mediaImages":["Plank/0.jpg","Plank/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"411":{"mediaRef":"Preacher_Curl","mediaImages":["Preacher_Curl/0.jpg","Preacher_Curl/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"40":{"mediaRef":"Chin-Up","mediaImages":["Chin-Up/0.jpg","Chin-Up/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.937},"56":{"mediaRef":"Clock_Push-Up","mediaImages":["Clock_Push-Up/0.jpg","Clock_Push-Up/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.62},"39":{"mediaRef":"Cable_Rear_Delt_Fly","mediaImages":["Cable_Rear_Delt_Fly/0.jpg","Cable_Rear_Delt_Fly/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"326":{"mediaRef":"Reverse_Crunch","mediaImages":["Reverse_Crunch/0.jpg","Reverse_Crunch/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"344":{"mediaRef":"Reverse_Hyperextension","mediaImages":["Reverse_Hyperextension/0.jpg","Reverse_Hyperextension/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"172":{"mediaRef":"Front_Leg_Raises","mediaImages":["Front_Leg_Raises/0.jpg","Front_Leg_Raises/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.62},"295":{"mediaRef":"Crossover_Reverse_Lunge","mediaImages":["Crossover_Reverse_Lunge/0.jpg","Crossover_Reverse_Lunge/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.817},"180":{"mediaRef":"Romanian_Deadlift","mediaImages":["Romanian_Deadlift/0.jpg","Romanian_Deadlift/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"38":{"mediaRef":"Shotgun_Row","mediaImages":["Shotgun_Row/0.jpg","Shotgun_Row/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"136":{"mediaRef":"Running_Treadmill","mediaImages":["Running_Treadmill/0.jpg","Running_Treadmill/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.65},"334":{"mediaRef":"Russian_Twist","mediaImages":["Russian_Twist/0.jpg","Russian_Twist/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"164":{"mediaRef":"Seated_Glute","mediaImages":["Seated_Glute/0.jpg","Seated_Glute/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.937},"12":{"mediaRef":"Single-Arm_Cable_Crossover","mediaImages":["Single-Arm_Cable_Crossover/0.jpg","Single-Arm_Cable_Crossover/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.6},"71":{"mediaRef":"Barbell_Shoulder_Press","mediaImages":["Barbell_Shoulder_Press/0.jpg","Barbell_Shoulder_Press/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.937},"75":{"mediaRef":"Barbell_Shrug","mediaImages":["Barbell_Shrug/0.jpg","Barbell_Shrug/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"94":{"mediaRef":"Dumbbell_Side_Bend","mediaImages":["Dumbbell_Side_Bend/0.jpg","Dumbbell_Side_Bend/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.937},"333":{"mediaRef":"Plank","mediaImages":["Plank/0.jpg","Plank/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"303":{"mediaRef":"Romanian_Deadlift","mediaImages":["Romanian_Deadlift/0.jpg","Romanian_Deadlift/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"298":{"mediaRef":"Weighted_Sissy_Squat","mediaImages":["Weighted_Sissy_Squat/0.jpg","Weighted_Sissy_Squat/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.817},"403":{"mediaRef":"Band_Skull_Crusher","mediaImages":["Band_Skull_Crusher/0.jpg","Band_Skull_Crusher/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.817},"280":{"mediaRef":"Spider_Curl","mediaImages":["Spider_Curl/0.jpg","Spider_Curl/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"108":{"mediaRef":"Barbell_Squat","mediaImages":["Barbell_Squat/0.jpg","Barbell_Squat/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"169":{"mediaRef":"Standing_Gastrocnemius_Calf_Stretch","mediaImages":["Standing_Gastrocnemius_Calf_Stretch/0.jpg","Standing_Gastrocnemius_Calf_Stretch/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.75},"167":{"mediaRef":"Hamstring_Stretch","mediaImages":["Hamstring_Stretch/0.jpg","Hamstring_Stretch/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.817},"165":{"mediaRef":"Standing_Hip_Circles","mediaImages":["Standing_Hip_Circles/0.jpg","Standing_Hip_Circles/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"173":{"mediaRef":"Quad_Stretch","mediaImages":["Quad_Stretch/0.jpg","Quad_Stretch/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.817},"293":{"mediaRef":"Step-up_with_Knee_Raise","mediaImages":["Step-up_with_Knee_Raise/0.jpg","Step-up_with_Knee_Raise/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.65},"323":{"mediaRef":"Sumo_Deadlift","mediaImages":["Sumo_Deadlift/0.jpg","Sumo_Deadlift/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"178":{"mediaRef":"Superman","mediaImages":["Superman/0.jpg","Superman/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"272":{"mediaRef":"T-Bar_Row_with_Handle","mediaImages":["T-Bar_Row_with_Handle/0.jpg","T-Bar_Row_with_Handle/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.937},"287":{"mediaRef":"Tate_Press","mediaImages":["Tate_Press/0.jpg","Tate_Press/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1},"129":{"mediaRef":"Jogging_Treadmill","mediaImages":["Jogging_Treadmill/0.jpg","Jogging_Treadmill/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"405":{"mediaRef":"Dip_Machine","mediaImages":["Dip_Machine/0.jpg","Dip_Machine/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.937},"407":{"mediaRef":"Pushups","mediaImages":["Pushups/0.jpg","Pushups/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.77},"74":{"mediaRef":"Upright_Row_-_With_Bands","mediaImages":["Upright_Row_-_With_Bands/0.jpg","Upright_Row_-_With_Bands/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.817},"89":{"mediaRef":"3_4_Sit-Up","mediaImages":["3_4_Sit-Up/0.jpg","3_4_Sit-Up/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.62},"135":{"mediaRef":"Walking_Treadmill","mediaImages":["Walking_Treadmill/0.jpg","Walking_Treadmill/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.65},"294":{"mediaRef":"Barbell_Walking_Lunge","mediaImages":["Barbell_Walking_Lunge/0.jpg","Barbell_Walking_Lunge/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.817},"340":{"mediaRef":"Cable_Wrist_Curl","mediaImages":["Cable_Wrist_Curl/0.jpg","Cable_Wrist_Curl/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":0.817},"281":{"mediaRef":"Zottman_Curl","mediaImages":["Zottman_Curl/0.jpg","Zottman_Curl/1.jpg"],"mediaSource":"free-exercise-db","mediaConfidence":1}};  // Media Match Probe v2 export, generated 2026-07-27
+
 
 // ── Schema Field Registry ──────────────────────────────────────────────────
 // THE SINGLE SOURCE OF TRUTH for all object fields and their defaults.
@@ -2931,7 +2933,13 @@ const SCHEMA_FIELDS = {
     difficulty:       '',   // 'beginner'|'intermediate'|'advanced'
     mechanic:         '',   // 'compound'|'isolation'
     source:           'builtin', // 'builtin'|'custom'|'imported'
-    url:              ''         // optional reference link (YouTube, article, etc.)
+    url:              '',        // optional reference link (YouTube, article, etc.)
+    // New in v2.10.0 — Media Integration Phase 1
+    mediaRef:         '',   // catalog slug / folder name (also the image path prefix)
+    mediaImages:      [],   // image paths from the catalog
+    mediaSource:      '',   // e.g. "free-exercise-db"
+    mediaConfidence:  0,    // match score, 0–1
+    mediaVerified:    false // false until a human confirms the auto-match
   },
   sessionExercise: {
     phase:            'workout',
@@ -2989,20 +2997,106 @@ const DAYS_L = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Sat
 function eqLabel(id) { var e = EQUIP_LIST.find(function(x){return x.id===id;}); return e ? e.label : id; }
 function eqIcon(id)  { var e = EQUIP_LIST.find(function(x){return x.id===id;}); return e ? e.icon : ''; }
 
-// ── Quick demo launcher — one tap from session/plan/exercise cards ─────────
+// ── Media match indicator — small dot shown next to exercises in the library
+// so it's visible at a glance which ones have a demo image match and how
+// confident it is, without having to open each one. Not every exercise has
+// a match (the free-exercise-db matching pass covers most but not all), so
+// this is the "mechanism to differentiate" rather than assuming universal coverage.
+function _mediaBadgeHTML(ex) {
+  if(!ex || !ex.mediaRef) return '';
+  var c = ex.mediaConfidence || 0;
+  var color = c >= 0.55 ? 'var(--green)' : (c >= 0.30 ? 'var(--gold)' : 'var(--red)');
+  var label = c >= 0.55 ? 'Demo available' : (c >= 0.30 ? 'Demo match — needs review' : 'Demo match — low confidence');
+  return '<span title="'+label+'" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:'+color+';margin-left:7px;flex-shrink:0;vertical-align:middle"></span>';
+}
+
+// ── Demo launcher (Media Integration Phase 1, Step 5) ───────────────────────
+// Images first (cache, falling back to network), numbered instructions text
+// always shown below (also cache-first), YouTube/web search demoted to
+// fallback links at the bottom. Falls back gracefully to the old
+// YouTube/web-only behavior for exercises with no media match at all.
+var _exDemoToken = 0;
 function openExDemo(exId) {
   var ex = db.exercises.find(function(e){ return e.id===exId; });
   if(!ex) return;
   var name = ex.name;
-  var refBtn = ex.url ?
-    '<a href="'+ex.url+'" target="_blank" class="btn btn-ghost" style="width:100%;margin-bottom:8px;text-decoration:none;box-sizing:border-box">🔗 Saved Reference</a>' : '';
-  openModal('Watch: '+name,
-    '<div style="display:flex;flex-direction:column;gap:8px">'+
-      refBtn+
-      '<a href="https://www.youtube.com/results?search_query='+encodeURIComponent(name+' exercise form')+'" target="_blank" class="btn btn-primary" style="width:100%;text-decoration:none;box-sizing:border-box">▶ YouTube Demo</a>'+
-      '<a href="https://www.google.com/search?q='+encodeURIComponent(name+' exercise how to')+'" target="_blank" class="btn btn-ghost" style="width:100%;text-decoration:none;box-sizing:border-box">🌐 Web Search</a>'+
+  var myToken = ++_exDemoToken;
+  var fallbackLinks =
+    (ex.url ? '<a href="'+ex.url+'" target="_blank" class="btn btn-ghost" style="width:100%;margin-bottom:8px;text-decoration:none;box-sizing:border-box">🔗 Saved Reference</a>' : '') +
+    '<a href="https://www.youtube.com/results?search_query='+encodeURIComponent(name+' exercise form')+'" target="_blank" class="btn btn-ghost" style="width:100%;margin-bottom:8px;text-decoration:none;box-sizing:border-box">▶ YouTube Demo</a>'+
+    '<a href="https://www.google.com/search?q='+encodeURIComponent(name+' exercise how to')+'" target="_blank" class="btn btn-ghost" style="width:100%;text-decoration:none;box-sizing:border-box">🌐 Web Search</a>';
+
+  if(!ex.mediaRef || !ex.mediaImages || !ex.mediaImages.length) {
+    // No catalog match — either genuinely not in free-exercise-db, or (very
+    // plausibly, given past drift in this library) a stray/retired duplicate
+    // exercise record left over from a merge import. Either way, the ex.url
+    // field is the manual escape hatch: set it once via Edit Exercise and it
+    // becomes the top "Saved Reference" link here, no matching required.
+    openModal(name,
+      '<div style="display:flex;flex-direction:column;gap:8px">'+
+        (ex.url ? '' : '<div style="font-size:11px;color:var(--t3);margin-bottom:2px">No demo match found for this exercise. If you have a link you like, add it via Edit Exercise — it\'ll show up here as the top option.</div>')+
+        fallbackLinks+
+      '</div>'
+    );
+    return;
+  }
+
+  openModal(name,
+    '<div id="exdemo-body" style="display:flex;flex-direction:column;gap:12px">'+
+      '<div style="text-align:center;color:var(--t3);font-size:12px;padding:20px 0">Loading demo…</div>'+
     '</div>'
   );
+
+  _resolveExDemoImages(ex.mediaImages).then(function(imgSrcs){
+    return mediaGetInstructions(exId).then(function(cached){
+      if(cached && cached.instructions) return cached.instructions;
+      // Not cached — try a live lookup (works if online, silently gives up if not).
+      return _fetchMediaCatalog().then(function(catalog){
+        var catEx = catalog.find(function(c){ return c.id === ex.mediaRef; });
+        return catEx ? catEx.instructions : [];
+      }).catch(function(){ return []; });
+    }).then(function(instructions){ return {imgSrcs: imgSrcs, instructions: instructions||[]}; });
+  }).then(function(result){
+    if(myToken !== _exDemoToken) return; // modal reopened for a different exercise meanwhile
+    var body = document.getElementById('exdemo-body');
+    if(!body) return;
+
+    var imgHtml = '';
+    if(result.imgSrcs.length) {
+      imgHtml = '<div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:2px">' +
+        result.imgSrcs.map(function(src){
+          return '<img src="'+src+'" style="width:140px;height:140px;object-fit:cover;border-radius:10px;background:var(--bg3);flex-shrink:0" loading="lazy" onerror="this.style.display=\'none\'">';
+        }).join('') + '</div>';
+    }
+
+    var instrHtml = '';
+    if(result.instructions.length) {
+      instrHtml = '<div style="font-size:12.5px;color:var(--t2);line-height:1.6">' +
+        '<ol style="padding-left:18px;margin:0">' +
+        result.instructions.map(function(step){ return '<li style="margin-bottom:6px">'+_escHtml(step)+'</li>'; }).join('') +
+        '</ol></div>';
+    } else if(!imgHtml) {
+      instrHtml = '<div style="font-size:12.5px;color:var(--t3);text-align:center;padding:10px 0">No cached demo for this exercise — connect to the internet to load it, or try the links below.</div>';
+    }
+
+    body.innerHTML =
+      (imgHtml || (!result.instructions.length ? '' : '')) +
+      instrHtml +
+      '<div style="display:flex;flex-direction:column;gap:8px;padding-top:4px;border-top:1px solid var(--border1)">' + fallbackLinks + '</div>';
+  }).catch(function(){
+    if(myToken !== _exDemoToken) return;
+    var body = document.getElementById('exdemo-body');
+    if(body) body.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px">'+fallbackLinks+'</div>';
+  });
+}
+// Resolves cached-blob-first image sources, falling back to the live network
+// URL for any path not (yet) cached. Never rejects — worst case is an empty array.
+function _resolveExDemoImages(paths) {
+  return Promise.all(paths.map(function(path){
+    return mediaGetImageBlobUrl(path).then(function(blobUrl){
+      return blobUrl || (MEDIA_IMG_BASE + path);
+    });
+  })).catch(function(){ return paths.map(function(p){ return MEDIA_IMG_BASE + p; }); });
 }
 
 // ── Resolve whether a plan/session entry is Hold-timer or Reps mode ────────
@@ -3034,6 +3128,189 @@ function loadDB() {
 }
 function saveDB() {
   try { localStorage.setItem(DB_KEY, JSON.stringify(db)); } catch(e) {}
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// MEDIA CACHE — IndexedDB store for exercise demo images + instruction text.
+// Deliberately NOT localStorage/db (would bloat every backup export with
+// re-fetchable third-party content) and NOT the exercise record itself beyond
+// the small `mediaImages` path array. Images are Blobs; instructions are
+// plain text pulled from the same public catalog at prefetch time — both are
+// disposable and re-derivable, so a cleared cache just means "prefetch again
+// next time you're online," never data loss.
+// ══════════════════════════════════════════════════════════════════════════
+const MEDIA_IMG_BASE = 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/';
+const MEDIA_CATALOG_URLS = [
+  'https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/dist/exercises.json',
+  'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/dist/exercises.json'
+];
+const MEDIA_DB_NAME = 'workoutdb_media';
+const MEDIA_DB_VERSION = 1;
+let _mediaDbPromise = null;
+let _mediaCatalogCache = null; // in-memory only, per page-load
+
+function _openMediaDB() {
+  if(_mediaDbPromise) return _mediaDbPromise;
+  _mediaDbPromise = new Promise(function(resolve, reject){
+    if(!('indexedDB' in window)) { reject(new Error('IndexedDB unavailable')); return; }
+    var req = indexedDB.open(MEDIA_DB_NAME, MEDIA_DB_VERSION);
+    req.onupgradeneeded = function(e){
+      var idb = e.target.result;
+      if(!idb.objectStoreNames.contains('blobs'))        idb.createObjectStore('blobs');
+      if(!idb.objectStoreNames.contains('instructions'))  idb.createObjectStore('instructions');
+    };
+    req.onsuccess = function(e){ resolve(e.target.result); };
+    req.onerror = function(e){ reject(e.target.error || new Error('IndexedDB open failed')); };
+  });
+  return _mediaDbPromise;
+}
+function _idbGet(storeName, key) {
+  return _openMediaDB().then(function(idb){
+    return new Promise(function(resolve, reject){
+      var tx = idb.transaction(storeName, 'readonly');
+      var req = tx.objectStore(storeName).get(key);
+      req.onsuccess = function(){ resolve(req.result || null); };
+      req.onerror = function(){ reject(req.error); };
+    });
+  });
+}
+function _idbPut(storeName, key, value) {
+  return _openMediaDB().then(function(idb){
+    return new Promise(function(resolve, reject){
+      var tx = idb.transaction(storeName, 'readwrite');
+      tx.objectStore(storeName).put(value, key);
+      tx.oncomplete = function(){ resolve(); };
+      tx.onerror = function(){ reject(tx.error); };
+    });
+  });
+}
+function _idbAllKeys(storeName) {
+  return _openMediaDB().then(function(idb){
+    return new Promise(function(resolve, reject){
+      var tx = idb.transaction(storeName, 'readonly');
+      var req = tx.objectStore(storeName).getAllKeys();
+      req.onsuccess = function(){ resolve(req.result || []); };
+      req.onerror = function(){ reject(req.error); };
+    });
+  });
+}
+function _idbClearAll() {
+  return _openMediaDB().then(function(idb){
+    return new Promise(function(resolve, reject){
+      var tx = idb.transaction(['blobs','instructions'], 'readwrite');
+      tx.objectStore('blobs').clear();
+      tx.objectStore('instructions').clear();
+      tx.oncomplete = function(){ resolve(); };
+      tx.onerror = function(){ reject(tx.error); };
+    });
+  });
+}
+
+function mediaGetImageBlobUrl(path) {
+  return _idbGet('blobs', path).then(function(blob){
+    if(blob) return URL.createObjectURL(blob);
+    return null; // not cached — caller falls back to network URL
+  }).catch(function(){ return null; });
+}
+function mediaGetInstructions(exId) {
+  return _idbGet('instructions', exId).catch(function(){ return null; });
+}
+
+function _fetchMediaCatalog() {
+  if(_mediaCatalogCache) return Promise.resolve(_mediaCatalogCache);
+  var tryUrl = function(i){
+    if(i >= MEDIA_CATALOG_URLS.length) return Promise.reject(new Error('Could not reach catalog'));
+    return fetch(MEDIA_CATALOG_URLS[i]).then(function(res){
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      return res.json();
+    }).then(function(data){
+      if(!Array.isArray(data) || data.length < 100) throw new Error('Unexpected catalog shape');
+      _mediaCatalogCache = data;
+      return data;
+    }).catch(function(){ return tryUrl(i+1); });
+  };
+  return tryUrl(0);
+}
+
+// Prefetch images + instructions for a given list of exercise ids. Skips
+// anything already cached. Safe to call repeatedly (e.g. every preset save) —
+// cheap no-op for exercises already fully cached.
+function mediaPrefetch(exIds, onProgress) {
+  var targets = (db.exercises||[]).filter(function(e){
+    return exIds.indexOf(e.id) >= 0 && e.mediaRef;
+  });
+  if(!targets.length) return Promise.resolve({fetched:0, skipped:0, failed:0});
+
+  return _fetchMediaCatalog().then(function(catalog){
+    var byId = {};
+    catalog.forEach(function(c){ byId[c.id] = c; });
+    var stats = {fetched:0, skipped:0, failed:0};
+    var i = 0;
+    function next() {
+      if(i >= targets.length) return Promise.resolve(stats);
+      var ex = targets[i++];
+      var catEx = byId[ex.mediaRef];
+      var work = Promise.resolve();
+      // Instructions (small text, cheap to overwrite each time to stay current)
+      if(catEx && catEx.instructions) {
+        work = work.then(function(){
+          return _idbPut('instructions', ex.id, {instructions: catEx.instructions, cachedAt: Date.now()});
+        });
+      }
+      // Images — only fetch paths not already cached
+      var imgWork = (ex.mediaImages||[]).map(function(path){
+        return _idbGet('blobs', path).then(function(existing){
+          if(existing) { stats.skipped++; return; }
+          return fetch(MEDIA_IMG_BASE + path).then(function(res){
+            if(!res.ok) throw new Error('HTTP '+res.status);
+            return res.blob();
+          }).then(function(blob){
+            return _idbPut('blobs', path, blob);
+          }).then(function(){ stats.fetched++; })
+            .catch(function(){ stats.failed++; });
+        });
+      });
+      work = work.then(function(){ return Promise.all(imgWork); });
+      return work.then(function(){
+        if(onProgress) onProgress(i, targets.length);
+        return next();
+      });
+    }
+    return next().then(function(){ return stats; });
+  });
+}
+
+function mediaPrefetchAll(onProgress) {
+  var ids = (db.exercises||[]).filter(function(e){ return e.mediaRef; }).map(function(e){ return e.id; });
+  return mediaPrefetch(ids, onProgress);
+}
+
+function mediaCacheStatus() {
+  return Promise.all([_idbAllKeys('blobs'), _idbAllKeys('instructions')]).then(function(res){
+    var blobKeys = res[0], instrKeys = res[1];
+    var totalExWithMedia = (db.exercises||[]).filter(function(e){ return e.mediaRef; }).length;
+    var totalImagePaths = 0;
+    (db.exercises||[]).forEach(function(e){ if(e.mediaRef) totalImagePaths += (e.mediaImages||[]).length; });
+    return {
+      cachedImages: blobKeys.length,
+      totalImagePaths: totalImagePaths,
+      cachedExInstructions: instrKeys.length,
+      totalExWithMedia: totalExWithMedia
+    };
+  }).catch(function(){
+    return {cachedImages:0, totalImagePaths:0, cachedExInstructions:0, totalExWithMedia:0};
+  });
+}
+function mediaEstimateStorage() {
+  if(navigator.storage && navigator.storage.estimate) {
+    return navigator.storage.estimate().then(function(est){ return est.usage || 0; }).catch(function(){ return 0; });
+  }
+  return Promise.resolve(0);
+}
+function mediaRequestPersistence() {
+  if(navigator.storage && navigator.storage.persist) {
+    navigator.storage.persist().catch(function(){});
+  }
 }
 
 // ── CRASH RECOVERY: continuous draft autosave for the active session ──────
@@ -3671,6 +3948,49 @@ function _runMigrations(silent) {
       });
     });
     if(changed) { saveDB(); note('Auto-patched exercise records from SCHEMA_FIELDS'); }
+  })();
+
+
+  // ── v9: Media Integration Phase 1 Step 3 — seed media match data ───────
+  // Seeded from the Media Match Probe v2 export (free-exercise-db matching
+  // pass run 2026-07-27). Keyed by exercise id. Only fills exercises that
+  // don't already have a mediaRef — never overwrites a manually verified or
+  // previously-set match. mediaConfidence lets the UI decide its own display
+  // threshold (Step 5); low-confidence entries are seeded too, just left
+  // mediaVerified:false like everything else.
+  //
+  // Deliberately NOT gated on schemaVersion — a schemaVersion-gated one-shot
+  // stamps "done" the first time it runs even if zero exercise ids in the
+  // live db happened to match the seed table (e.g. before a clean/replace
+  // import brought the exercise ids in line with what was matched). That
+  // left the seed permanently stuck at 0/148 with no way to retry short of
+  // a full data reset. Checking `!ex.mediaRef` per exercise makes this loop
+  // naturally idempotent and cheap (148 comparisons), so it's safe to just
+  // run it — and therefore able to self-heal — on every startup.
+  (function _seedMediaMatchData(){
+    var seed = MEDIA_MATCH_SEED_V1;
+    var changed = false, matched = 0, alreadySet = 0;
+    db.exercises.forEach(function(ex){
+      var m = seed[ex.id];
+      if(!m) return;
+      if(ex.mediaRef) { alreadySet++; return; }
+      ex.mediaRef = m.mediaRef;
+      ex.mediaImages = m.mediaImages;
+      ex.mediaSource = m.mediaSource;
+      ex.mediaConfidence = m.mediaConfidence;
+      ex.mediaVerified = false;
+      changed = true;
+      matched++;
+    });
+    if(changed) saveDB();
+    var seedSize = Object.keys(seed).length;
+    if(matched > 0) {
+      note('Seeded media match data for '+matched+' exercise'+(matched===1?'':'s')+
+        ' ('+alreadySet+' already had it, '+seedSize+' total in seed table)');
+    } else if(alreadySet === 0) {
+      note('⚠ Media seed matched 0 of '+seedSize+' exercises by id — your exercise library ' +
+        'ids don\'t line up with the Media Match Probe export. Check for a stray/merged import.');
+    }
   })();
 
   // ── v5: fix duplicate exercise IDs 37-42 ─────────────────────────────────
@@ -5827,6 +6147,7 @@ function confirmSavePlanAsPreset() {
   saveDB();
   closeModal();
   toast('✓ Saved as "'+name+'"');
+  mediaPrefetch(preset.exercises.map(function(e){return e.exerciseId;})).catch(function(){});
 }
 
 function clearPlan() {
@@ -7919,9 +8240,12 @@ function renderExercises() {
       catExs.map(function(ex){
         var typeIcon = ex.type==='stretch'?'🧘 ':ex.type==='cardio'?'🏃 ':'';
         return '<div class="card-row" onclick="openExDetail('+ex.id+')">'+
-          '<div class="card-body"><div class="card-title">'+typeIcon+ex.name+'</div>'+
+          '<div class="card-body"><div class="card-title">'+typeIcon+ex.name+_mediaBadgeHTML(ex)+'</div>'+
           '<div class="card-sub">'+ex.muscles.join(' · ')+'</div></div>'+
-          '<div class="card-right"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div></div>';
+          '<div class="card-right" style="display:flex;align-items:center;gap:4px">'+
+            '<div class="btn-icon" title="Preview demo" onclick="event.stopPropagation();openExDemo('+ex.id+')" style="color:var(--teal);width:26px;height:26px"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>'+
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>'+
+          '</div></div>';
       }).join('')+
       '</div>';
     });
@@ -7967,9 +8291,12 @@ function renderExercises() {
             exs.map(function(ex){
               var typeIcon = ex.type==='stretch'?'🧘 ':ex.type==='cardio'?'🏃 ':'';
               return '<div class="card-row" onclick="openExDetail('+ex.id+')">'+
-                '<div class="card-body"><div class="card-title">'+typeIcon+ex.name+'</div>'+
+                '<div class="card-body"><div class="card-title">'+typeIcon+ex.name+_mediaBadgeHTML(ex)+'</div>'+
                 '<div class="card-sub">'+(ex.type==='stretch'?'Hold · ':'')+ex.equipment.map(eqLabel).join(', ')+'</div></div>'+
-                '<div class="card-right"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div></div>';
+                '<div class="card-right" style="display:flex;align-items:center;gap:4px">'+
+                  '<div class="btn-icon" title="Preview demo" onclick="event.stopPropagation();openExDemo('+ex.id+')" style="color:var(--teal);width:26px;height:26px"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>'+
+                  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>'+
+                '</div></div>';
             }).join('')+
             '</div>'+
           '</div>'+
@@ -8220,15 +8547,19 @@ function openExDetail(id) {
       '<div class="btn-icon" style="width:28px;height:28px" title="Edit target" onclick="openAddExModal('+id+')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>'+
     '</div>' : '';
 
-  var urlSection = ex.url ?
-    '<div style="display:flex;gap:6px;margin-bottom:12px">'+
-      '<a href="'+ex.url+'" target="_blank" style="flex:1;padding:9px 12px;border-radius:10px;background:rgba(0,217,217,0.08);border:1px solid rgba(0,217,217,0.25);color:var(--teal);font-size:12px;font-weight:600;text-decoration:none;text-align:center">🔗 Open Reference</a>'+
-    '</div>' : '';
-  var searchBtns =
-    '<div style="display:flex;gap:6px;margin-bottom:12px">'+
-      '<a href="https://www.youtube.com/results?search_query='+encodeURIComponent(ex.name+' exercise form')+'" target="_blank" style="flex:1;padding:8px;border-radius:10px;background:var(--bg3);border:1px solid var(--border1);color:var(--t2);font-size:11px;font-weight:600;text-decoration:none;text-align:center">▶ YouTube</a>'+
-      '<a href="https://www.google.com/search?q='+encodeURIComponent(ex.name+' exercise how to')+'" target="_blank" style="flex:1;padding:8px;border-radius:10px;background:var(--bg3);border:1px solid var(--border1);color:var(--t2);font-size:11px;font-weight:600;text-decoration:none;text-align:center">🌐 Web Search</a>'+
+  var mediaStatusHTML;
+  if(ex.mediaRef) {
+    var c = ex.mediaConfidence || 0;
+    var tierLabel = c >= 0.55 ? 'High-confidence match' : (c >= 0.30 ? 'Needs review — may not be exact' : 'Low confidence — likely not this exercise');
+    var tierColor = c >= 0.55 ? 'var(--green)' : (c >= 0.30 ? 'var(--gold)' : 'var(--red)');
+    mediaStatusHTML = '<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;font-size:11px;color:var(--t3)">'+
+      '<span style="width:6px;height:6px;border-radius:50%;background:'+tierColor+';flex-shrink:0"></span>'+
+      tierLabel+' ('+Math.round(c*100)+'%) · '+ex.mediaImages.length+' image'+(ex.mediaImages.length===1?'':'s')+
     '</div>';
+  } else {
+    mediaStatusHTML = '<div style="font-size:11px;color:var(--t3);margin-bottom:8px">No catalog demo match for this exercise — showing search links only</div>';
+  }
+  var demoBtn = '<button class="btn btn-primary" style="width:100%;margin-bottom:4px" onclick="openExDemo('+id+')">▶ Preview Demo</button>';
 
   openModal(ex.name,
     '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">'+
@@ -8239,8 +8570,9 @@ function openExDetail(id) {
     (ex.positions&&ex.positions.length?ex.positions.map(function(p){return '<span style="background:rgba(255,215,0,0.1);color:var(--gold);padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700">'+p+'</span>';}).join(''):'')+'</div>'+
     (ex.notes?'<div style="color:var(--t2);font-size:13px;margin-bottom:12px;padding:10px;background:var(--bg3);border-radius:10px">'+ex.notes+'</div>':'')+
     targetSection+
-    urlSection+
-    searchBtns+
+    mediaStatusHTML+
+    demoBtn+
+    '<div style="height:8px"></div>'+
     '<div class="flabel" style="margin-bottom:8px">Recent History</div>'+histHTML+
     '<div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">'+
     notesViewBtn+
@@ -8560,6 +8892,17 @@ function renderSettings() {
       '<button class="btn btn-primary" style="width:100%" onclick="saveWorkoutDefaults()">Save Defaults</button>' +
     '</div>' +
 
+    '<div class="sec-hdr">Media</div>' +
+    '<div class="card" style="padding:14px 16px">' +
+      '<div id="media-cache-status" style="font-size:12.5px;color:var(--t2);margin-bottom:4px">Checking cache…</div>' +
+      '<div id="media-cache-storage-note" style="font-size:10.5px;color:var(--t3);margin-bottom:12px">estimating storage…</div>' +
+      '<div style="display:flex;gap:8px">' +
+        '<button class="btn btn-ghost" style="flex:1" id="media-sync-btn" onclick="syncMediaCache()">⟳ Re-sync</button>' +
+        '<button class="btn btn-ghost" style="flex:1;color:var(--red);border-color:rgba(232,93,76,0.3)" onclick="clearMediaCache()">🗑 Clear Cache</button>' +
+      '</div>' +
+      '<div style="font-size:11px;color:var(--t3);margin-top:8px">Demo images and instructions are cached on-device for offline use during workouts. Free-exercise-db (public domain) is the source.</div>' +
+    '</div>' +
+
     '<div class="sec-hdr">Data</div>' +
     '<div class="card">' +
       '<div class="card-row" onclick="generateSessionBrief()">' +
@@ -8590,6 +8933,59 @@ function renderSettings() {
       '</div>' +
     '</div>' +
     '<div style="height:20px"></div>';
+
+  renderMediaCacheStatus();
+}
+
+function _fmtBytes(n) {
+  if(!n) return '0 MB';
+  var mb = n / (1024*1024);
+  return (mb < 0.1 ? '<0.1' : mb.toFixed(1)) + ' MB';
+}
+function renderMediaCacheStatus() {
+  var el = document.getElementById('media-cache-status');
+  if(!el) return;
+  Promise.all([mediaCacheStatus(), mediaEstimateStorage()]).then(function(res){
+    var status = res[0], bytes = res[1];
+    var elNow = document.getElementById('media-cache-status');
+    if(!elNow) return;
+    // navigator.storage.estimate() reports usage for the whole app origin, not
+    // just the media cache — it'll include your workout data, localStorage,
+    // and anything else this device has stored for the app. It's a rough
+    // on-device footprint figure, not a "media cache size" figure.
+    elNow.textContent = status.cachedImages + '/' + status.totalImagePaths + ' images cached · ' +
+      status.cachedExInstructions + '/' + status.totalExWithMedia + ' instructions cached';
+    var el2 = document.getElementById('media-cache-storage-note');
+    if(el2) el2.textContent = 'Total on-device app storage (all data, not just media): ' + _fmtBytes(bytes);
+  }).catch(function(){
+    var elNow = document.getElementById('media-cache-status');
+    if(elNow) elNow.textContent = 'Cache status unavailable';
+  });
+}
+function syncMediaCache() {
+  var btn = document.getElementById('media-sync-btn');
+  var statusEl = document.getElementById('media-cache-status');
+  if(btn) { btn.disabled = true; btn.textContent = 'Syncing…'; }
+  mediaPrefetchAll(function(done, total){
+    if(statusEl) statusEl.textContent = 'Syncing '+done+'/'+total+' exercises…';
+  }).then(function(stats){
+    if(btn) { btn.disabled = false; btn.textContent = '⟳ Re-sync'; }
+    toast('✓ Synced — '+stats.fetched+' new, '+stats.skipped+' already cached'+(stats.failed?', '+stats.failed+' failed':''));
+    renderMediaCacheStatus();
+  }).catch(function(){
+    if(btn) { btn.disabled = false; btn.textContent = '⟳ Re-sync'; }
+    toast('⚠ Sync failed — check your connection');
+    renderMediaCacheStatus();
+  });
+}
+function clearMediaCache() {
+  if(!confirm('Clear all cached demo images and instructions? You can re-sync anytime while online.')) return;
+  _idbClearAll().then(function(){
+    toast('✓ Media cache cleared');
+    renderMediaCacheStatus();
+  }).catch(function(){
+    toast('⚠ Could not clear cache');
+  });
 }
 
 /* === SESSION BRIEF — comprehensive context document for new Claude.ai sessions ===
@@ -9126,6 +9522,7 @@ function savePreset() {
   var preset={id:db.ids.preset++,name:name,muscles:muscles,exercises:exIds.map(function(id){return {exerciseId:id};}),order:maxCustomOrder+1};
   db.presets.push(preset);
   saveDB();closeModal();renderPresets();toast('✓ Preset saved!');
+  mediaPrefetch(exIds).catch(function(){}); // best-effort, silent if offline
 }
 
 function viewPreset(id) {
@@ -10170,9 +10567,14 @@ function confirmImport(mode) {
   db.schemaVersion = 3;
 
   saveDB();
+  // Import resets schemaVersion to 3, so re-run migrations now (idempotent —
+  // safe even though it also runs at next startup) to reseed mediaRef/etc.
+  // for anything the import didn't already carry, then bulk-prefetch.
+  _runMigrations(true);
   closeModal();
   renderHome();
   toast('✓ Import complete — '+(mode==='replace'?'data replaced':'data merged'));
+  mediaPrefetchAll().catch(function(){}); // best-effort, silent if offline
 }
 
 /* === CRASH RECOVERY: resume prompt === */
@@ -10298,6 +10700,9 @@ if(_startupMigrationReport && _startupMigrationReport.length > 0) {
 if(db.activeSessionDraft && db.activeSessionDraft.session && !G.sess) {
   setTimeout(function(){ promptResumeSessionDraft(); }, 400);
 }
+// Media cache: request persistent storage so iOS Safari doesn't evict the
+// IndexedDB media cache under storage pressure (best-effort, silent either way).
+mediaRequestPersistence();
 </script>
 </body>
 </html>
